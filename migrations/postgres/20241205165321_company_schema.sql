@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS company (
     address TEXT,
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW()
+);
 -- +goose StatementEnd
 
 -- +goose Down
