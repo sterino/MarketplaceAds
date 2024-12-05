@@ -10,7 +10,7 @@ func InitRoutes(router *gin.RouterGroup, companyHandler *handler.CompanyHandler)
 	{
 		//company.GET("/")
 		company.POST("/login", companyHandler.Login)
-		company.POST("/", companyHandler.Register)
+		company.POST("/register", companyHandler.Register)
 		//company.PUT("/")
 		//company.GET("/")
 	}

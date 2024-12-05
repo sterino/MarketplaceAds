@@ -28,7 +28,7 @@ func NewCompanyHandler(service interfaces.CompanyService) *CompanyHandler {
 // @Success 201 {object} response.Response
 // @Failure 400 {object} response.Response
 // @Failure 500 {object} response.Response
-// @Router /company [post]
+// @Router /company/login [post]
 func (h *CompanyHandler) Login(ctx *gin.Context) {
 	req := company.LoginRequest{}
 	if err := ctx.BindJSON(&req); err != nil {
@@ -57,7 +57,7 @@ func (h *CompanyHandler) Login(ctx *gin.Context) {
 // @Success 201 {object} response.Response
 // @Failure 400 {object} response.Response
 // @Failure 500 {object} response.Response
-// @Router /company [post]
+// @Router /company/register [post]
 func (h *CompanyHandler) Register(ctx *gin.Context) {
 	req := company.RegisterRequest{}
 	if err := ctx.BindJSON(&req); err != nil {
