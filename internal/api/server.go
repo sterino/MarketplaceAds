@@ -16,7 +16,7 @@ type Server struct {
 	engine *gin.Engine
 }
 
-func NewServer(companyHandler *handler.CompanyHandler) *Server {
+func NewServer(companyHandler *handler.CompanyHandler, influenceHandler *handler.InfluencerHandler) *Server {
 	router := gin.Default()
 	router.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"*"},
@@ -31,7 +31,7 @@ func NewServer(companyHandler *handler.CompanyHandler) *Server {
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	routes.InitRoutes(router.Group("/api"), companyHandler)
+	routes.InitRoutes(router.Group("/api"), companyHandler, influenceHandler)
 
 	return &Server{router}
 }
