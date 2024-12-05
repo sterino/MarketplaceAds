@@ -1,14 +1,17 @@
 -- +goose Up
 -- +goose StatementBegin
 CREATE TABLE IF NOT EXISTS influencer (
-    id UUID PRIMARY KEY DEFAULT GEN_RANDOM_UUID(),
-    name VARCHAR NOT NULL,
+      id UUID PRIMARY KEY,
     email VARCHAR UNIQUE NOT NULL,
     password VARCHAR NOT NULL,
     phone_number VARCHAR,
-    address VARCHAR,
-    created_at TIMESTAMP DEFAULT NOW(),
-    updated_at TIMESTAMP DEFAULT NOW()
+    platforms TEXT[],
+    followers_count INT DEFAULT 0,
+    category VARCHAR,
+    bio TEXT,
+    address TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
     );
 -- +goose StatementEnd
 
