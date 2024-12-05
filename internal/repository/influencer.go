@@ -29,7 +29,7 @@ func (ir *InfluencerRepository) Create(ctx context.Context, data influencer.Regi
 		data.Email,
 		data.Password,
 		data.PhoneNumber,
-		data.Platforms, // массив ссылок
+		data.Platforms,
 		data.FollowersCount,
 		data.Category,
 		data.Bio,

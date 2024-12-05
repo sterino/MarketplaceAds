@@ -128,24 +128,20 @@ func (s *CompanyService) Create(ctx context.Context, data company.RegisterReques
 }
 
 func (s *CompanyService) VerifyEmail(ctx context.Context, email, code string) error {
-	// Получаем сохраненный код для проверки
 	storedCode, err := s.codeRepository.GetCode(ctx, email)
 	if err != nil {
 		return errors.New("verification code not found or expired")
 	}
 
-	// Сравниваем с предоставленным кодом
 	if storedCode != code {
 		return errors.New("invalid verification code")
 	}
 
-	// Удаляем код из хранилища после успешной верификации
 	err = s.codeRepository.DeleteCode(ctx, email)
 	if err != nil {
 		return err
 	}
 
-	// Завершаем процесс регистрации
 	_, err = s.companyRepository.GetByEmail(ctx, email)
 	if err != nil {
 		return err

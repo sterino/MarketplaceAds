@@ -26,10 +26,13 @@ func InitializeAPI(cfg config.Config) (*api.Server, error) {
 		return nil, err
 	}
 	companyRepository := repository.NewCompanyRepository(sqlxDB)
+	influencerRepository := repository.NewInfluencerRepository(sqlxDB)
 	codeRepository := repository.NewCodeRepository(sqlxDB)
 	v := jwt.ProvideSecretKey()
 	companyService := service.NewCompanyService(companyRepository, codeRepository, v)
+	influencerService := service.NewInfluencerService(influencerRepository, v)
 	companyHandler := handler.NewCompanyHandler(companyService)
-	server := api.NewServer(companyHandler)
+	influencerHandler := handler.NewInfluencerHandler(influencerService)
+	server := api.NewServer(companyHandler, influencerHandler)
 	return server, nil
 }
