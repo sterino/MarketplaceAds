@@ -4,6 +4,7 @@ import (
 	"Marketplace/internal/domain/company"
 	"Marketplace/internal/repository/interfaces"
 	services "Marketplace/internal/service/interfaces"
+	"Marketplace/internal/utils/email"
 	"Marketplace/internal/utils/jwt"
 	"Marketplace/internal/utils/password"
 	"context"
@@ -13,11 +14,13 @@ import (
 type CompanyService struct {
 	companyRepository interfaces.CompanyRepository
 	secretKey         []byte
+	codeRepository    interfaces.CodeRepository
 }
 
-func NewCompanyService(companyRepository interfaces.CompanyRepository, secretKey []byte) services.CompanyService {
+func NewCompanyService(companyRepository interfaces.CompanyRepository, codeRepository interfaces.CodeRepository, secretKey []byte) services.CompanyService {
 	return &CompanyService{
 		companyRepository: companyRepository,
+		codeRepository:    codeRepository,
 		secretKey:         secretKey,
 	}
 }
@@ -51,6 +54,17 @@ func (s *CompanyService) Register(ctx context.Context, input company.RegisterReq
 	if err == nil {
 		return "", company.ErrorEmailConflict
 	} else if !errors.Is(err, company.ErrorNotFound) {
+		return "", err
+	}
+
+	code := email.GenerateCode()
+	err = email.SendVerificationCode(input.Email, code)
+	if err != nil {
+		return "", err
+	}
+
+	err = s.codeRepository.SaveCode(ctx, input.Email, code)
+	if err != nil {
 		return "", err
 	}
 
@@ -111,4 +125,31 @@ func (s *CompanyService) Create(ctx context.Context, data company.RegisterReques
 	}
 
 	return
+}
+
+func (s *CompanyService) VerifyEmail(ctx context.Context, email, code string) error {
+	// Получаем сохраненный код для проверки
+	storedCode, err := s.codeRepository.GetCode(ctx, email)
+	if err != nil {
+		return errors.New("verification code not found or expired")
+	}
+
+	// Сравниваем с предоставленным кодом
+	if storedCode != code {
+		return errors.New("invalid verification code")
+	}
+
+	// Удаляем код из хранилища после успешной верификации
+	err = s.codeRepository.DeleteCode(ctx, email)
+	if err != nil {
+		return err
+	}
+
+	// Завершаем процесс регистрации
+	_, err = s.companyRepository.GetByEmail(ctx, email)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

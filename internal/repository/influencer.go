@@ -33,7 +33,6 @@ func (ir *InfluencerRepository) Create(ctx context.Context, data influencer.Regi
 		data.FollowersCount,
 		data.Category,
 		data.Bio,
-		data.PricePerPost,
 		data.Address,
 	}
 	if err = ir.db.QueryRowContext(ctx, query, args...).Scan(&id); err != nil {

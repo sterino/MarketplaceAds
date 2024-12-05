@@ -67,7 +67,6 @@ func (s *InfluencerService) Register(ctx context.Context, input influencer.Regis
 		FollowersCount: input.FollowersCount,
 		Category:       input.Category,
 		Bio:            input.Bio,
-		PricePerPost:   input.PricePerPost,
 		Address:        input.Address,
 	}
 	return s.Create(ctx, newInfluencer)
@@ -109,7 +108,6 @@ func (s *InfluencerService) Create(ctx context.Context, data influencer.Register
 		FollowersCount: data.FollowersCount,
 		Category:       data.Category,
 		Bio:            data.Bio,
-		PricePerPost:   data.PricePerPost,
 		Address:        data.Address,
 	})
 	if err != nil {

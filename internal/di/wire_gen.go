@@ -16,7 +16,6 @@ import (
 	_ "github.com/lib/pq"
 )
 
-
 func InitializeAPI(cfg config.Config) (*api.Server, error) {
 	sqlxDB, err := db.ConnectDatabase(cfg)
 	if err != nil {
@@ -27,8 +26,9 @@ func InitializeAPI(cfg config.Config) (*api.Server, error) {
 		return nil, err
 	}
 	companyRepository := repository.NewCompanyRepository(sqlxDB)
+	codeRepository := repository.NewCodeRepository(sqlxDB)
 	v := jwt.ProvideSecretKey()
-	companyService := service.NewCompanyService(companyRepository, v)
+	companyService := service.NewCompanyService(companyRepository, codeRepository, v)
 	companyHandler := handler.NewCompanyHandler(companyService)
 	server := api.NewServer(companyHandler)
 	return server, nil

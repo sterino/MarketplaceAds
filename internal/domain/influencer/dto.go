@@ -26,7 +26,6 @@ type RegisterRequest struct {
 	FollowersCount int      `json:"followers_count"`
 	Category       string   `json:"category"`
 	Bio            string   `json:"bio"`
-	PricePerPost   float64  `json:"price_per_post"`
 	Address        string   `json:"address"`
 }
 
@@ -44,7 +43,6 @@ type Response struct {
 	FollowersCount int       `json:"followers_count"`
 	Category       string    `json:"category"`
 	Bio            string    `json:"bio"`
-	PricePerPost   float64   `json:"price_per_post"`
 	Address        string    `json:"address,omitempty"`
 	CreatedAt      time.Time `json:"createdAt"`
 	UpdatedAt      time.Time `json:"updatedAt"`
@@ -93,9 +91,6 @@ func (r *RegisterRequest) Validate() error {
 	}
 	if r.FollowersCount <= 0 {
 		return ErrorInvalidFollowers
-	}
-	if r.PricePerPost <= 0 {
-		return ErrorInvalidPricePerPost
 	}
 	return nil
 }
