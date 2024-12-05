@@ -12,6 +12,7 @@ import (
 // @title Marketplace
 // @version 1.0
 // @description API Server for Marketplace for influences and companies
+// @BasePath /api
 func main() {
 	config, configErr := config.LoadConfig()
 	if configErr != nil {
