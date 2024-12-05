@@ -8,7 +8,6 @@ import (
 	"Marketplace/internal/utils/password"
 	"context"
 	"errors"
-	"time"
 )
 
 type CompanyService struct {
@@ -112,30 +111,4 @@ func (s *CompanyService) Create(ctx context.Context, data company.RegisterReques
 	}
 
 	return
-}
-
-func (s *CompanyService) VerifyCode(ctx context.Context, email, code string) error {
-	// Получаем сохраненный код и время истечения
-	storedCode, expiresAt, err := s.companyRepository.GetVerificationCode(ctx, email)
-	if err != nil {
-		return err
-	}
-
-	// Проверка срока действия кода
-	if time.Now().After(expiresAt) {
-		return errors.New("verification code has expired")
-	}
-
-	// Проверка кода
-	if storedCode != code {
-		return errors.New("invalid verification code")
-	}
-
-	// Успешная проверка — обновляем статус пользователя
-	err = s.companyRepository.MarkEmailVerified(ctx, email)
-	if err != nil {
-		return err
-	}
-
-	return nil
 }
