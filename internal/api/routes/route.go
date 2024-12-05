@@ -16,7 +16,7 @@ func InitRoutes(router *gin.RouterGroup, companyHandler *handler.CompanyHandler,
 		//company.GET("/")
 	}
 
-	influencer := router.Group("/")
+	influencer := router.Group("/influencer")
 	{
 		influencer.POST("/login", influencerHandler.Login)
 		influencer.POST("/register", influencerHandler.Register)
