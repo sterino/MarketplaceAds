@@ -24,7 +24,7 @@ func NewCompanyHandler(service interfaces.CompanyService) *CompanyHandler {
 // @Tags company
 // @Accept json
 // @Produce json
-// @Param project body company.LoginRequest true "Login Request"
+// @Param company body company.LoginRequest true "Login Request"
 // @Success 201 {object} response.Response
 // @Failure 400 {object} response.Response
 // @Failure 500 {object} response.Response
@@ -53,7 +53,7 @@ func (h *CompanyHandler) Login(ctx *gin.Context) {
 // @Tags company
 // @Accept json
 // @Produce json
-// @Param project body company.RegisterRequest true "Login Request"
+// @Param company body company.RegisterRequest true "Login Request"
 // @Success 201 {object} response.Response
 // @Failure 400 {object} response.Response
 // @Failure 500 {object} response.Response
