@@ -31,7 +31,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "description": "Login Request",
-                        "name": "project",
+                        "name": "company",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -77,7 +77,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "description": "Login Request",
-                        "name": "project",
+                        "name": "company",
                         "in": "body",
                         "required": true,
                         "schema": {

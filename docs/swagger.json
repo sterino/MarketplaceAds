@@ -24,7 +24,7 @@
                 "parameters": [
                     {
                         "description": "Login Request",
-                        "name": "project",
+                        "name": "company",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -70,7 +70,7 @@
                 "parameters": [
                     {
                         "description": "Login Request",
-                        "name": "project",
+                        "name": "company",
                         "in": "body",
                         "required": true,
                         "schema": {

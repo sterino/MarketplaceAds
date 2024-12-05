@@ -46,7 +46,7 @@ paths:
       parameters:
       - description: Login Request
         in: body
-        name: project
+        name: company
         required: true
         schema:
           $ref: '#/definitions/company.LoginRequest'
@@ -76,7 +76,7 @@ paths:
       parameters:
       - description: Login Request
         in: body
-        name: project
+        name: company
         required: true
         schema:
           $ref: '#/definitions/company.RegisterRequest'
