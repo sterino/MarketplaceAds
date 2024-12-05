@@ -7,7 +7,7 @@ import (
 
 func SendVerificationCode(toEmail, code string) error {
 	from := "egore.chip@example.com"
-	password := "khasenov2003"
+	password := "xjpmnoyjzehaakxx"
 	smtpHost := "smtp.gmail.com"
 	smtpPort := "587"
 
