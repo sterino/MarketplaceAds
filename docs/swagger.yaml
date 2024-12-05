@@ -37,7 +37,37 @@ info:
   title: Marketplace
   version: "1.0"
 paths:
-  /company:
+  /company/login:
+    post:
+      consumes:
+      - application/json
+      description: Login for companies with the input payload
+      parameters:
+      - description: Login Request
+        in: body
+        name: project
+        required: true
+        schema:
+          $ref: '#/definitions/company.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Login for companies
+      tags:
+      - company
+  /company/register:
     post:
       consumes:
       - application/json
