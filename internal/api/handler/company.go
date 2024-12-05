@@ -84,6 +84,40 @@ func (h *CompanyHandler) Register(ctx *gin.Context) {
 	ctx.JSON(http.StatusCreated, successRes)
 }
 
+// VerifyEmail godoc
+// @Summary Verify email with code for company
+// @Description Verify company email with the code sent via email
+// @Tags company
+// @Accept json
+// @Produce json
+// @Param email body string true "Email"
+// @Param code body string true "Verification Code"
+// @Success 200 {object} response.Response
+// @Failure 400 {object} response.Response
+// @Failure 500 {object} response.Response
+// @Router /company/verify [post]
+func (h *CompanyHandler) VerifyEmail(ctx *gin.Context) {
+	var req struct {
+		Email string `json:"email"`
+		Code  string `json:"code"`
+	}
+	if err := ctx.BindJSON(&req); err != nil {
+		errRes := response.ClientResponse(http.StatusBadRequest, "invalid input", nil, err.Error())
+		ctx.JSON(http.StatusBadRequest, errRes)
+		return
+	}
+
+	err := h.companyService.VerifyEmail(ctx.Request.Context(), req.Email, req.Code)
+	if err != nil {
+		errRes := response.ClientResponse(http.StatusBadRequest, "verification failed", nil, err.Error())
+		ctx.JSON(http.StatusBadRequest, errRes)
+		return
+	}
+
+	successRes := response.ClientResponse(http.StatusOK, "email verified successfully", nil, nil)
+	ctx.JSON(http.StatusOK, successRes)
+}
+
 //func (h *CompanyHandler) GetByID(ctx *gin.Context){
 //	var body
 //}
