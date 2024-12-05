@@ -1,8 +1,8 @@
 -- +goose Up
 -- +goose StatementBegin
 CREATE TABLE email_verification_codes (
-      email VARCHAR(255) PRIMARY KEY,
-      code VARCHAR(6) NOT NULL,
+      email VARCHAR PRIMARY KEY,
+      code VARCHAR NOT NULL,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
