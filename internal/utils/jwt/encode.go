@@ -20,7 +20,7 @@ func Encode(body JWT, secretKey []byte) (*string, *int64, error) {
 		},
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expiresAt,
-			Issuer:    "your-service-name",
+			Issuer:    "marketplace",
 			Subject:   body.UUID,
 		},
 	}

@@ -3,7 +3,7 @@ package company
 import "time"
 
 type Entity struct {
-	ID          uint      `db:"id" bson:"_id"`
+	ID          string    `db:"id" bson:"_id"`
 	Name        string    `db:"name" bson:"name"`
 	Email       string    `db:"email" bson:"email"`
 	Password    string    `db:"password" bson:"password"`

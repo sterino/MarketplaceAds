@@ -1,6 +1,6 @@
 package jwt
 
 type JWT struct {
-	UUID  uint
+	UUID  string
 	Email string
 }
