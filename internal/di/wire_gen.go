@@ -16,9 +16,6 @@ import (
 	_ "github.com/lib/pq"
 )
 
-import (
-	_ "github.com/lib/pq"
-)
 
 func InitializeAPI(cfg config.Config) (*api.Server, error) {
 	sqlxDB, err := db.ConnectDatabase(cfg)
