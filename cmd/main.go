@@ -5,6 +5,8 @@ import (
 	"Marketplace/internal/di"
 	"log"
 	"os"
+
+	_ "Marketplace/docs"
 )
 
 // @title Marketplace

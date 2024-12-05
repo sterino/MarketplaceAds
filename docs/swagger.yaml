@@ -1,0 +1,7 @@
+info:
+  contact: {}
+  description: API Server for Marketplace for influences and companies
+  title: Marketplace
+  version: "1.0"
+paths: {}
+swagger: "2.0"

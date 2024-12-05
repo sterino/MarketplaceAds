@@ -1,0 +1,10 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "API Server for Marketplace for influences and companies",
+        "title": "Marketplace",
+        "contact": {},
+        "version": "1.0"
+    },
+    "paths": {}
+}
