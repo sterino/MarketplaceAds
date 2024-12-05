@@ -1,7 +1,70 @@
+definitions:
+  company.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  company.RegisterRequest:
+    properties:
+      address:
+        type: string
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      phone_number:
+        type: string
+    type: object
+  response.Response:
+    properties:
+      data: {}
+      error: {}
+      message:
+        type: string
+      status_code:
+        type: integer
+    type: object
 info:
   contact: {}
   description: API Server for Marketplace for influences and companies
   title: Marketplace
   version: "1.0"
-paths: {}
+paths:
+  /company:
+    post:
+      consumes:
+      - application/json
+      description: Register for companies with the input payload
+      parameters:
+      - description: Login Request
+        in: body
+        name: project
+        required: true
+        schema:
+          $ref: '#/definitions/company.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Register for companies
+      tags:
+      - company
 swagger: "2.0"
