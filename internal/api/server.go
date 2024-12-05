@@ -22,7 +22,7 @@ func NewServer(companyHandler *handler.CompanyHandler) *Server {
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	routes.InitRoutes(router.Group("/"), companyHandler)
+	routes.InitRoutes(router.Group("/api"), companyHandler)
 
 	return &Server{router}
 }
