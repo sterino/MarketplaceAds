@@ -13,6 +13,7 @@ import (
 	"Marketplace/internal/repository"
 	"Marketplace/internal/service"
 	"Marketplace/internal/utils/jwt"
+	_ "github.com/lib/pq"
 )
 
 import (
