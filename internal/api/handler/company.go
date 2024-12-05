@@ -41,9 +41,10 @@ func (h *CompanyHandler) Login(ctx *gin.Context) {
 	if err != nil {
 		errRes := response.ClientResponse(http.StatusForbidden, "authorization failed", nil, err.Error())
 		ctx.JSON(http.StatusForbidden, errRes)
+		return
 	}
 
-	successRes := response.ClientResponse(http.StatusCreated, "authorized", gin.H{"access token": token, "expires_at": expiresAt}, nil)
+	successRes := response.ClientResponse(http.StatusCreated, "authorized", gin.H{"access_token": token, "expires_at": expiresAt}, nil)
 	ctx.JSON(http.StatusCreated, successRes)
 }
 
@@ -61,6 +62,12 @@ func (h *CompanyHandler) Login(ctx *gin.Context) {
 func (h *CompanyHandler) Register(ctx *gin.Context) {
 	req := company.RegisterRequest{}
 	if err := ctx.BindJSON(&req); err != nil {
+		errRes := response.ClientResponse(http.StatusBadRequest, "fields provided are wrong", nil, err.Error())
+		ctx.JSON(http.StatusBadRequest, errRes)
+		return
+	}
+
+	if err := req.Validate(); err != nil {
 		errRes := response.ClientResponse(http.StatusBadRequest, "fields provided are wrong", nil, err.Error())
 		ctx.JSON(http.StatusBadRequest, errRes)
 		return

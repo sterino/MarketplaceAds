@@ -2,12 +2,17 @@ package company
 
 import (
 	"errors"
+	"regexp"
 	"time"
 )
 
 var (
-	ErrorNotFound      = errors.New("error not found")
-	ErrorEmailConflict = errors.New("email already exists")
+	ErrorNotFound           = errors.New("error not found")
+	ErrorEmailConflict      = errors.New("email already exists")
+	ErrorInvalidName        = errors.New("name is invalid or empty")
+	ErrorInvalidEmail       = errors.New("email format is invalid")
+	ErrorInvalidPassword    = errors.New("password must be at least 8 characters")
+	ErrorInvalidPhoneNumber = errors.New("phone number format is invalid")
 )
 
 type RegisterRequest struct {
@@ -55,4 +60,30 @@ func ParseFromEntity(entity Entity) Response {
 		CreatedAt:   entity.CreatedAt,
 		UpdatedAt:   entity.UpdatedAt,
 	}
+}
+
+func (r *RegisterRequest) Validate() error {
+	if r.Name == "" {
+		return ErrorInvalidName
+	}
+	if !isValidEmail(r.Email) {
+		return ErrorInvalidEmail
+	}
+	if len(r.Password) < 8 {
+		return ErrorInvalidPassword
+	}
+	if r.PhoneNumber != "" && !isValidPhoneNumber(r.PhoneNumber) {
+		return ErrorInvalidPhoneNumber
+	}
+	return nil
+}
+
+func isValidEmail(email string) bool {
+	re := regexp.MustCompile(`^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$`)
+	return re.MatchString(email)
+}
+
+func isValidPhoneNumber(phone string) bool {
+	re := regexp.MustCompile(`^\+?[0-9]{7,15}$`)
+	return re.MatchString(phone)
 }
