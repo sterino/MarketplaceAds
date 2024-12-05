@@ -19,7 +19,6 @@ func NewCodeRepository(db *sqlx.DB) interfaces.CodeRepository {
 	}
 }
 
-// Сохранение кода для email
 func (cr *CodeRepository) SaveCode(ctx context.Context, email, code string) error {
 	query := `
 		INSERT INTO email_verification_codes (email, code)
@@ -29,7 +28,6 @@ func (cr *CodeRepository) SaveCode(ctx context.Context, email, code string) erro
 	return err
 }
 
-// Получение кода для email
 func (cr *CodeRepository) GetCode(ctx context.Context, email string) (string, error) {
 	var code string
 	query := `SELECT code FROM email_verification_codes WHERE email = $1;`
@@ -43,7 +41,6 @@ func (cr *CodeRepository) GetCode(ctx context.Context, email string) (string, er
 	return code, nil
 }
 
-// Удаление кода после успешной верификации
 func (cr *CodeRepository) DeleteCode(ctx context.Context, email string) error {
 	query := `DELETE FROM email_verification_codes WHERE email = $1;`
 	_, err := cr.db.ExecContext(ctx, query, email)

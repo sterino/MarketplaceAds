@@ -1,12 +1,13 @@
 package email
 
 import (
-	"crypto/rand"
 	"fmt"
+	"math/rand"
+	"time"
 )
 
 func GenerateCode() string {
-	var code [6]byte
-	rand.Read(code[:])
-	return fmt.Sprintf("%06d", code[0:6])
+	rand.Seed(time.Now().UnixNano())
+	code := rand.Intn(900000) + 100000
+	return fmt.Sprintf("%06d", code)
 }
