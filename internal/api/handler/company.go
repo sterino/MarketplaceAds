@@ -70,6 +70,7 @@ func (h *CompanyHandler) Register(ctx *gin.Context) {
 	if err != nil {
 		errRes := response.ClientResponse(http.StatusForbidden, "registration failed", nil, err.Error())
 		ctx.JSON(http.StatusForbidden, errRes)
+		return
 	}
 
 	successRes := response.ClientResponse(http.StatusCreated, "registered", res, nil)
