@@ -83,3 +83,63 @@ func (h *InfluencerHandler) Register(ctx *gin.Context) {
 	successRes := response.ClientResponse(http.StatusCreated, "registered", gin.H{"id": res}, nil)
 	ctx.JSON(http.StatusCreated, successRes)
 }
+
+// GetInfluencerByID godoc
+// @Summary Get influencer by ID
+// @Description Get influencer details using influencer ID
+// @Tags influencer
+// @Accept json
+// @Produce json
+// @Param id path string true "Influencer ID"
+// @Success 200 {object} response.Response
+// @Failure 400 {object} response.Response
+// @Failure 500 {object} response.Response
+// @Router /influencer/{id} [get]
+func (h *InfluencerHandler) GetByID(ctx *gin.Context) {
+	id := ctx.Param("id")
+	if id == "" {
+		errRes := response.ClientResponse(http.StatusBadRequest, "influencer ID is required", nil, nil)
+		ctx.JSON(http.StatusBadRequest, errRes)
+		return
+	}
+
+	res, err := h.influencerService.GetByID(ctx.Request.Context(), id)
+	if err != nil {
+		errRes := response.ClientResponse(http.StatusNotFound, "influencer not found", nil, err.Error())
+		ctx.JSON(http.StatusNotFound, errRes)
+		return
+	}
+
+	successRes := response.ClientResponse(http.StatusOK, "influencer retrieved successfully", res, nil)
+	ctx.JSON(http.StatusOK, successRes)
+}
+
+// GetInfluencerByEmail godoc
+// @Summary Get influencer by Email
+// @Description Get influencer details using influencer Email
+// @Tags influencer
+// @Accept json
+// @Produce json
+// @Param email path string true "Influencer Email"
+// @Success 200 {object} response.Response
+// @Failure 400 {object} response.Response
+// @Failure 500 {object} response.Response
+// @Router /influencer/email/{email} [get]
+func (h *InfluencerHandler) GetByEmail(ctx *gin.Context) {
+	email := ctx.Param("email")
+	if email == "" {
+		errRes := response.ClientResponse(http.StatusBadRequest, "influencer email is required", nil, nil)
+		ctx.JSON(http.StatusBadRequest, errRes)
+		return
+	}
+
+	res, err := h.influencerService.GetByEmail(ctx.Request.Context(), email)
+	if err != nil {
+		errRes := response.ClientResponse(http.StatusNotFound, "influencer not found", nil, err.Error())
+		ctx.JSON(http.StatusNotFound, errRes)
+		return
+	}
+
+	successRes := response.ClientResponse(http.StatusOK, "influencer retrieved successfully", res, nil)
+	ctx.JSON(http.StatusOK, successRes)
+}

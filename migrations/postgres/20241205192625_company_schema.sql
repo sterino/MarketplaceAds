@@ -1,15 +1,20 @@
 -- +goose Up
 -- +goose StatementBegin
-CREATE TABLE IF NOT EXISTS companies (
-    id UUID PRIMARY KEY DEFAULT GEN_RANDOM_UUID(),
-    name VARCHAR NOT NULL,
-    email VARCHAR UNIQUE NOT NULL,
-    password VARCHAR NOT NULL,
-    phone_number VARCHAR,
-    address VARCHAR,
-    created_at TIMESTAMP DEFAULT NOW(),
-    updated_at TIMESTAMP DEFAULT NOW()
-    );
+CREATE TABLE companies (
+                           id SERIAL PRIMARY KEY,
+                           name VARCHAR(255) NOT NULL,
+                           email VARCHAR(255) UNIQUE NOT NULL,
+                           email_verified BOOLEAN DEFAULT FALSE,
+                           password VARCHAR(255) NOT NULL,
+                           phone_number VARCHAR(20),
+                           account_verified BOOLEAN DEFAULT FALSE,
+                           account_type VARCHAR(50),
+                           address TEXT,
+                           orders_id TEXT[], -- Массив строк для заказов
+                           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                           updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- +goose StatementEnd
 
 -- +goose Down

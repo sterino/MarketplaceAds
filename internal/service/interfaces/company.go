@@ -11,5 +11,6 @@ type CompanyService interface {
 	GetByEmail(ctx context.Context, email string) (company.Response, error)
 	GetByEmailEntity(ctx context.Context, email string) (company.Entity, error)
 	GetByID(ctx context.Context, input string) (res company.Response, err error)
+	SendCode(ctx context.Context, input string) error
 	VerifyEmail(ctx context.Context, email, code string) error
 }

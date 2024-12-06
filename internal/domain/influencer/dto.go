@@ -35,17 +35,20 @@ type LoginRequest struct {
 }
 
 type Response struct {
-	ID             string    `json:"id"`
-	Name           string    `json:"name"`
-	Email          string    `json:"email"`
-	PhoneNumber    string    `json:"phone_number"`
-	Platforms      []string  `json:"platforms"`
-	FollowersCount int       `json:"followers_count"`
-	Category       string    `json:"category"`
-	Bio            string    `json:"bio"`
-	Address        string    `json:"address,omitempty"`
-	CreatedAt      time.Time `json:"createdAt"`
-	UpdatedAt      time.Time `json:"updatedAt"`
+	ID              string    `json:"id"`
+	Name            string    `json:"name"`
+	Email           string    `json:"email"`
+	EmailVerified   bool      `json:"email_verified"`
+	PhoneNumber     string    `json:"phone_number"`
+	AccountVerified bool      `json:"account_verified"`
+	AccountType     string    `json:"account_type"`
+	Platforms       []string  `json:"platforms"`
+	FollowersCount  int       `json:"followers_count"`
+	Category        string    `json:"category"`
+	Bio             string    `json:"bio"`
+	Address         string    `json:"address,omitempty"`
+	CreatedAt       time.Time `json:"createdAt"`
+	UpdatedAt       time.Time `json:"updatedAt"`
 }
 
 type AuthResponse struct {

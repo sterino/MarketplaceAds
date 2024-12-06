@@ -57,17 +57,6 @@ func (s *CompanyService) Register(ctx context.Context, input company.RegisterReq
 		return "", err
 	}
 
-	code := email.GenerateCode()
-	err = email.SendVerificationCode(input.Email, code)
-	if err != nil {
-		return "", err
-	}
-
-	err = s.codeRepository.SaveCode(ctx, input.Email, code)
-	if err != nil {
-		return "", err
-	}
-
 	hashedPassword, err := password.Generate(input.Password)
 	if err != nil {
 		return "", err
@@ -127,6 +116,28 @@ func (s *CompanyService) Create(ctx context.Context, data company.RegisterReques
 	return
 }
 
+func (s *CompanyService) SendCode(ctx context.Context, input string) error {
+	data, err := s.companyRepository.GetByEmail(ctx, input)
+	if err != nil {
+		if !errors.Is(err, company.ErrorNotFound) {
+			return err
+		}
+		return err
+	}
+
+	code := email.GenerateCode()
+	err = email.SendVerificationCode(data.Email, code)
+	if err != nil {
+		return err
+	}
+
+	err = s.codeRepository.SaveCode(ctx, data.Email, code)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (s *CompanyService) VerifyEmail(ctx context.Context, email, code string) error {
 	storedCode, err := s.codeRepository.GetCode(ctx, email)
 	if err != nil {
@@ -148,4 +159,5 @@ func (s *CompanyService) VerifyEmail(ctx context.Context, email, code string) er
 	}
 
 	return nil
+
 }

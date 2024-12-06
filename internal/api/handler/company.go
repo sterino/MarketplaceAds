@@ -118,10 +118,100 @@ func (h *CompanyHandler) VerifyEmail(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, successRes)
 }
 
-//func (h *CompanyHandler) GetByID(ctx *gin.Context){
-//	var body
-//}
-//
-//func (h *CompanyHandler) GetByEmail(ctx *gin.Context){
-//	var body
-//}
+// SendCode godoc
+// @Summary Send verification code to email for company
+// @Description Send verification code to the email address for company registration
+// @Tags company
+// @Accept json
+// @Produce json
+// @Param email body string true "Email"
+// @Success 200 {object} response.Response "Verification code sent successfully"
+// @Failure 400 {object} response.Response "Invalid input"
+// @Failure 500 {object} response.Response "Internal server error"
+// @Router /company/send_code [post]
+func (h *CompanyHandler) SendCode(ctx *gin.Context) {
+	var req struct {
+		Email string `json:"email" binding:"required,email"`
+	}
+
+	// Привязка данных из тела запроса
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		// Возвращаем ошибку при неправильном вводе
+		errRes := response.ClientResponse(http.StatusBadRequest, "invalid input", nil, err.Error())
+		ctx.JSON(http.StatusBadRequest, errRes)
+		return
+	}
+
+	// Отправка кода верификации
+	err := h.companyService.SendCode(ctx.Request.Context(), req.Email)
+	if err != nil {
+		// Ошибка при отправке кода
+		errRes := response.ClientResponse(http.StatusInternalServerError, "failed to send verification code", nil, err.Error())
+		ctx.JSON(http.StatusInternalServerError, errRes)
+		return
+	}
+
+	// Успешная отправка кода
+	successRes := response.ClientResponse(http.StatusOK, "verification code sent successfully", nil, nil)
+	ctx.JSON(http.StatusOK, successRes)
+}
+
+// GetCompanyByID godoc
+// @Summary Get company by ID
+// @Description Get company details using company ID
+// @Tags company
+// @Accept json
+// @Produce json
+// @Param id path string true "Company ID"
+// @Success 200 {object} response.Response
+// @Failure 400 {object} response.Response
+// @Failure 500 {object} response.Response
+// @Router /company/{id} [get]
+func (h *CompanyHandler) GetByID(ctx *gin.Context) {
+	id := ctx.Param("id")
+	if id == "" {
+		errRes := response.ClientResponse(http.StatusBadRequest, "company ID is required", nil, nil)
+		ctx.JSON(http.StatusBadRequest, errRes)
+		return
+	}
+
+	res, err := h.companyService.GetByID(ctx.Request.Context(), id)
+	if err != nil {
+		errRes := response.ClientResponse(http.StatusNotFound, "company not found", nil, err.Error())
+		ctx.JSON(http.StatusNotFound, errRes)
+		return
+	}
+
+	successRes := response.ClientResponse(http.StatusOK, "company retrieved successfully", res, nil)
+	ctx.JSON(http.StatusOK, successRes)
+}
+
+// GetCompanyByEmail godoc
+// @Summary Get company by Email
+// @Description Get company details using company Email
+// @Tags company
+// @Accept json
+// @Produce json
+// @Param email path string true "Company Email"
+// @Success 200 {object} response.Response
+// @Failure 400 {object} response.Response
+// @Failure 500 {object} response.Response
+// @Router /company/email/{email} [get]
+func (h *CompanyHandler) GetByEmail(ctx *gin.Context) {
+	email := ctx.Param("email")
+	if email == "" {
+		errRes := response.ClientResponse(http.StatusBadRequest, "company email is required", nil, nil)
+		ctx.JSON(http.StatusBadRequest, errRes)
+		return
+	}
+
+	res, err := h.companyService.GetByEmail(ctx.Request.Context(), email)
+	if err != nil {
+		errRes := response.ClientResponse(http.StatusNotFound, "company not found", nil, err.Error())
+		ctx.JSON(http.StatusNotFound, errRes)
+		return
+	}
+
+	successRes := response.ClientResponse(http.StatusOK, "company retrieved successfully", res, nil)
+	ctx.JSON(http.StatusOK, successRes)
+}

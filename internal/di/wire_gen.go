@@ -17,22 +17,41 @@ import (
 )
 
 func InitializeAPI(cfg config.Config) (*api.Server, error) {
+	// Подключение к базе данных
 	sqlxDB, err := db.ConnectDatabase(cfg)
 	if err != nil {
 		return nil, err
 	}
+
+	// Миграция базы данных
 	err = db.Migrate(sqlxDB)
 	if err != nil {
 		return nil, err
 	}
+
+	// Репозитории
 	companyRepository := repository.NewCompanyRepository(sqlxDB)
 	influencerRepository := repository.NewInfluencerRepository(sqlxDB)
 	codeRepository := repository.NewCodeRepository(sqlxDB)
-	v := jwt.ProvideSecretKey()
-	companyService := service.NewCompanyService(companyRepository, codeRepository, v)
-	influencerService := service.NewInfluencerService(influencerRepository, v)
+	userRepository := repository.NewUserRepository(sqlxDB)
+	adRepository := repository.NewAdRepository(sqlxDB) // Добавлен репозиторий для объявления
+
+	// Утилиты
+	secretKey := jwt.ProvideSecretKey()
+
+	// Сервисы
+	companyService := service.NewCompanyService(companyRepository, codeRepository, secretKey)
+	influencerService := service.NewInfluencerService(influencerRepository, secretKey)
+	userService := service.NewUserService(userRepository)
+	adService := service.NewAdService(adRepository) // Добавлен сервис для объявления
+
+	// Хэндлеры
 	companyHandler := handler.NewCompanyHandler(companyService)
 	influencerHandler := handler.NewInfluencerHandler(influencerService)
-	server := api.NewServer(companyHandler, influencerHandler)
+	userHandler := handler.NewUserHandler(userService)
+	adHandler := handler.NewAdHandler(adService) // Добавлен хендлер для объявления
+
+	// Инициализация сервера
+	server := api.NewServer(companyHandler, influencerHandler, userHandler, adHandler) // Добавлен хендлер для объявления
 	return server, nil
 }
