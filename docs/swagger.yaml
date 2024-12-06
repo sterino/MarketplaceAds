@@ -1,5 +1,14 @@
 basePath: /api
 definitions:
+  ad.CreateRequest:
+    properties:
+      description:
+        type: string
+      price:
+        type: number
+      title:
+        type: string
+    type: object
   company.LoginRequest:
     properties:
       email:
@@ -71,6 +80,177 @@ info:
   title: Marketplace
   version: "1.0"
 paths:
+  /ad/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get ad details by its ID
+      parameters:
+      - description: Ad ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Get ad by ID
+      tags:
+      - ad
+  /ad/{id}/status:
+    put:
+      consumes:
+      - application/json
+      description: Update the status of an ad (e.g., open/closed)
+      parameters:
+      - description: Ad ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Ad Status
+        in: body
+        name: status
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Update ad status
+      tags:
+      - ad
+  /ad/all:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of all ads
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Get all ads
+      tags:
+      - ad
+  /ad/create:
+    post:
+      consumes:
+      - application/json
+      description: Create a new ad with the input payload
+      parameters:
+      - description: Ad Creation Request
+        in: body
+        name: ad
+        required: true
+        schema:
+          $ref: '#/definitions/ad.CreateRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Create a new ad
+      tags:
+      - ad
+  /company/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get company details using company ID
+      parameters:
+      - description: Company ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Get company by ID
+      tags:
+      - company
+  /company/email/{email}:
+    get:
+      consumes:
+      - application/json
+      description: Get company details using company Email
+      parameters:
+      - description: Company Email
+        in: path
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Get company by Email
+      tags:
+      - company
   /company/login:
     post:
       consumes:
@@ -131,6 +311,36 @@ paths:
       summary: Register for companies
       tags:
       - company
+  /company/send_code:
+    post:
+      consumes:
+      - application/json
+      description: Send verification code to the email address for company registration
+      parameters:
+      - description: Email
+        in: body
+        name: email
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Verification code sent successfully
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Send verification code to email for company
+      tags:
+      - company
   /company/verify:
     post:
       consumes:
@@ -167,6 +377,64 @@ paths:
       summary: Verify email with code for company
       tags:
       - company
+  /influencer/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get influencer details using influencer ID
+      parameters:
+      - description: Influencer ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Get influencer by ID
+      tags:
+      - influencer
+  /influencer/email/{email}:
+    get:
+      consumes:
+      - application/json
+      description: Get influencer details using influencer Email
+      parameters:
+      - description: Influencer Email
+        in: path
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Get influencer by Email
+      tags:
+      - influencer
   /influencer/login:
     post:
       consumes:
@@ -227,4 +495,37 @@ paths:
       summary: Register for influencers
       tags:
       - influencer
+  /user/account_type/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve account type (company/influencer) based on user ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Account type retrieved successfully
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/response.Response'
+        "404":
+          description: User not found
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Get user account type
+      tags:
+      - user
 swagger: "2.0"
