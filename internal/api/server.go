@@ -20,7 +20,7 @@ func NewServer(
 	companyHandler *handler.CompanyHandler,
 	influenceHandler *handler.InfluencerHandler,
 	userHandler *handler.UserHandler,
-	adHandler *handler.AdHandler, // Добавлен хендлер для объявлений
+	adHandler *handler.AdHandler,
 ) *Server {
 	router := gin.Default()
 	router.Use(cors.New(cors.Config{
@@ -36,7 +36,6 @@ func NewServer(
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	// Инициализация маршрутов
 	routes.InitRoutes(router.Group("/api"), companyHandler, influenceHandler, userHandler, adHandler) // Добавлен adHandler
 
 	return &Server{router}

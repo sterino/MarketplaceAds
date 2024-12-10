@@ -30,6 +30,13 @@ func NewAdHandler(service interfaces.AdService) *AdHandler {
 // @Failure 500 {object} response.Response
 // @Router /ad/create [post]
 func (h *AdHandler) Create(ctx *gin.Context) {
+	user, exists := ctx.Get("user")
+	if !exists || user == nil {
+		errRes := response.ClientResponse(http.StatusUnauthorized, "User not authorized", nil, nil)
+		ctx.JSON(http.StatusUnauthorized, errRes)
+		return
+	}
+
 	req := ad.CreateRequest{}
 	if err := ctx.BindJSON(&req); err != nil {
 		errRes := response.ClientResponse(http.StatusBadRequest, "invalid input", nil, err.Error())
