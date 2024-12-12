@@ -8,7 +8,7 @@ CREATE TABLE companies (
                            password VARCHAR NOT NULL,
                            phone_number VARCHAR,
                            account_verified BOOLEAN DEFAULT FALSE,
-                           account_type VARCHAR DEFAULT "company",
+                           account_type VARCHAR DEFAULT 'company',
                            address TEXT,
                            orders_id TEXT[] DEFAULT NULL, -- Массив строк для заказов
                            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

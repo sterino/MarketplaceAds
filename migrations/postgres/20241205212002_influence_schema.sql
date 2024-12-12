@@ -8,7 +8,7 @@ CREATE TABLE influencers (
                              password VARCHAR NOT NULL,
                              phone_number VARCHAR,
                              account_verified BOOLEAN DEFAULT FALSE,
-                             account_type VARCHAR DEFAULT "influencer",
+                             account_type VARCHAR DEFAULT 'influencer',
                              platforms TEXT[], -- Массив строк для платформ
                              followers_count INT DEFAULT 0,
                              category VARCHAR,
