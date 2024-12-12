@@ -26,7 +26,7 @@ func InitRoutes(
 		company.POST("/login", companyHandler.Login)
 		company.POST("/register", companyHandler.Register)
 		company.POST("/verify", companyHandler.VerifyEmail)
-		company.POST("/send_code", companyHandler.SendCode)
+		company.POST("/verify/send_code", companyHandler.SendCode)
 		// Add other company routes as needed
 	}
 

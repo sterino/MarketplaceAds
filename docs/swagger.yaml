@@ -190,6 +190,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/response.Response'
+      security:
+      - BearerAuth: []
       summary: Create a new ad
       tags:
       - ad
@@ -311,36 +313,6 @@ paths:
       summary: Register for companies
       tags:
       - company
-  /company/send_code:
-    post:
-      consumes:
-      - application/json
-      description: Send verification code to the email address for company registration
-      parameters:
-      - description: Email
-        in: body
-        name: email
-        required: true
-        schema:
-          type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Verification code sent successfully
-          schema:
-            $ref: '#/definitions/response.Response'
-        "400":
-          description: Invalid input
-          schema:
-            $ref: '#/definitions/response.Response'
-        "500":
-          description: Internal server error
-          schema:
-            $ref: '#/definitions/response.Response'
-      summary: Send verification code to email for company
-      tags:
-      - company
   /company/verify:
     post:
       consumes:
@@ -375,6 +347,36 @@ paths:
           schema:
             $ref: '#/definitions/response.Response'
       summary: Verify email with code for company
+      tags:
+      - company
+  /company/verify/send_code:
+    post:
+      consumes:
+      - application/json
+      description: Send verification code to the email address for company registration
+      parameters:
+      - description: Email
+        in: body
+        name: email
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Verification code sent successfully
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Send verification code to email for company
       tags:
       - company
   /influencer/{id}:
@@ -528,4 +530,9 @@ paths:
       summary: Get user account type
       tags:
       - user
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

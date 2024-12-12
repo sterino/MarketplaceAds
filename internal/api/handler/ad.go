@@ -28,6 +28,7 @@ func NewAdHandler(service interfaces.AdService) *AdHandler {
 // @Success 201 {object} response.Response
 // @Failure 400 {object} response.Response
 // @Failure 500 {object} response.Response
+// @Security BearerAuth
 // @Router /ad/create [post]
 func (h *AdHandler) Create(ctx *gin.Context) {
 	user, exists := ctx.Get("user")

@@ -128,7 +128,7 @@ func (h *CompanyHandler) VerifyEmail(ctx *gin.Context) {
 // @Success 200 {object} response.Response "Verification code sent successfully"
 // @Failure 400 {object} response.Response "Invalid input"
 // @Failure 500 {object} response.Response "Internal server error"
-// @Router /company/send_code [post]
+// @Router /company/verify/send_code [post]
 func (h *CompanyHandler) SendCode(ctx *gin.Context) {
 	var req struct {
 		Email string `json:"email" binding:"required,email"`
