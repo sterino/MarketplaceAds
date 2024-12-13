@@ -7,6 +7,7 @@ import (
 	"database/sql"
 	"errors"
 	"github.com/jmoiron/sqlx"
+	"log"
 )
 
 type CodeRepository struct {
@@ -20,6 +21,7 @@ func NewCodeRepository(db *sqlx.DB) interfaces.CodeRepository {
 }
 
 func (cr *CodeRepository) SaveCode(ctx context.Context, email, code string) error {
+	log.Printf(email, " ", code)
 	query := `
 		INSERT INTO email_verification_codes (email, code)
 		VALUES ($1, $2)

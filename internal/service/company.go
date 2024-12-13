@@ -141,7 +141,7 @@ func (s *CompanyService) SendCode(ctx context.Context, input string) error {
 func (s *CompanyService) VerifyEmail(ctx context.Context, email, code string) error {
 	storedCode, err := s.codeRepository.GetCode(ctx, email)
 	if err != nil {
-		return err //errors.New("verification code not found or expired")
+		return errors.New("verification code not found or expired")
 	}
 
 	if storedCode != code {
