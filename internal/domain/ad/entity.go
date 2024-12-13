@@ -5,6 +5,7 @@ import "time"
 type Entity struct {
 	ID          string    `db:"id" bson:"_id"`
 	Title       string    `db:"title" bson:"title"`
+	CompanyID   string    `db:"company_id" json:"company_id"`
 	Description string    `db:"description" bson:"description"`
 	Price       float64   `db:"price" bson:"price"`
 	Status      string    `db:"status" bson:"status"`

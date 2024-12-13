@@ -12,6 +12,7 @@ var (
 )
 
 type CreateRequest struct {
+	CompanyID   string  `json:"companyID"`
 	Title       string  `json:"title"`
 	Description string  `json:"description"`
 	Price       float64 `json:"price"`
@@ -20,6 +21,7 @@ type CreateRequest struct {
 type Response struct {
 	ID          string    `json:"id"`
 	Title       string    `json:"title"`
+	CompanyID   string    `json:"company_id"`
 	Description string    `json:"description"`
 	Price       float64   `json:"price"`
 	Status      string    `json:"status"`
@@ -31,6 +33,7 @@ func ParseFromEntity(entity Entity) Response {
 	return Response{
 		ID:          entity.ID,
 		Title:       entity.Title,
+		CompanyID:   entity.CompanyID,
 		Description: entity.Description,
 		Price:       entity.Price,
 		Status:      entity.Status,

@@ -24,10 +24,10 @@ func (ar *AdRepository) Create(ctx context.Context, data ad.CreateRequest) (stri
 	}
 
 	query := `
-		INSERT INTO ads (title, description, price, status)
-		VALUES ($1, $2, $3, $4)
+		INSERT INTO ads (title, description, price, status, company_id)
+		VALUES ($1, $2, $3, $4, $5)
 		RETURNING id;`
-	args := []interface{}{data.Title, data.Description, data.Price, "open"}
+	args := []interface{}{data.Title, data.Description, data.Price, "open", data.CompanyID}
 
 	var id string
 	err := ar.db.QueryRowContext(ctx, query, args...).Scan(&id)
