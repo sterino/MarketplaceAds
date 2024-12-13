@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"Marketplace/internal/domain/code"
 	"Marketplace/internal/domain/company"
 	"Marketplace/internal/service/interfaces"
 	"Marketplace/internal/utils/response"
@@ -91,21 +92,17 @@ func (h *CompanyHandler) Register(ctx *gin.Context) {
 // @Tags company
 // @Accept json
 // @Produce json
-// @Param email body string true "Email"
-// @Param code body string true "Verification Code"
+// @Param email body code.ReqCode true "Email and code"
 // @Success 200 {object} response.Response
 // @Failure 400 {object} response.Response
 // @Failure 500 {object} response.Response
 // @Router /company/verify [post]
 func (h *CompanyHandler) VerifyEmail(ctx *gin.Context) {
-	var req struct {
-		Email string `json:"email"`
-		Code  string `json:"code"`
-	}
+	req := code.ReqCode{}
 
 	log.Printf("Request received with email: %s, code: %s", req.Email, req.Code)
 	if err := ctx.BindJSON(&req); err != nil {
-		errRes := response.ClientResponse(http.StatusBadRequest, "invalid input", nil, err.Error())
+		errRes := response.ClientResponse(http.StatusBadRequest, "fields provided are wrong", nil, err.Error())
 		ctx.JSON(http.StatusBadRequest, errRes)
 		return
 	}
