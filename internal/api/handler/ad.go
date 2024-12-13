@@ -35,6 +35,7 @@ func (h *AdHandler) Create(ctx *gin.Context) {
 	req := ad.CreateRequest{}
 	user, exists := ctx.Get("user")
 	if !exists || user == nil {
+		log.Printf("User not found in context: %v", user)
 		errRes := response.ClientResponse(http.StatusUnauthorized, "User not authorized", nil, nil)
 		ctx.JSON(http.StatusUnauthorized, errRes)
 		return
