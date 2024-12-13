@@ -39,7 +39,7 @@ func JWTMiddleware() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-
+		log.Printf("Decoded JWT: %+v", decodedJWT)
 		// Сохраняем данные пользователя в контексте запроса
 		c.Set("user", decodedJWT)
 

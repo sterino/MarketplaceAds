@@ -40,7 +40,7 @@ func InitRoutes(
 		influencer.GET("email/:email", companyHandler.GetByEmail)
 	}
 
-	ad := router.Group("/ad")
+	ad := router.Group("/ad").Use(JWTMiddleware())
 	{
 		ad.POST("/create", adHandler.Create)
 		ad.GET("/:id", adHandler.GetByID)
