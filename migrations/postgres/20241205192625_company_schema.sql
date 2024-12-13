@@ -10,7 +10,6 @@ CREATE TABLE companies (
                            account_verified BOOLEAN DEFAULT FALSE,
                            account_type VARCHAR DEFAULT 'company',
                            address TEXT,
-                           orders_id TEXT[] DEFAULT NULL, -- Массив строк для заказов
                            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

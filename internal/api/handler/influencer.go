@@ -143,3 +143,69 @@ func (h *InfluencerHandler) GetByEmail(ctx *gin.Context) {
 	successRes := response.ClientResponse(http.StatusOK, "influencer retrieved successfully", res, nil)
 	ctx.JSON(http.StatusOK, successRes)
 }
+
+// VerifyEmail godoc
+// @Summary Verify email with code for influencer
+// @Description Verify influencer email with the code sent via email
+// @Tags influencer
+// @Accept json
+// @Produce json
+// @Param email body string true "Email"
+// @Param code body string true "Verification Code"
+// @Success 200 {object} response.Response
+// @Failure 400 {object} response.Response
+// @Failure 500 {object} response.Response
+// @Router /influencer/verify [post]
+func (h *InfluencerHandler) VerifyEmail(ctx *gin.Context) {
+	var req struct {
+		Email string `json:"email"`
+		Code  string `json:"code"`
+	}
+	if err := ctx.BindJSON(&req); err != nil {
+		errRes := response.ClientResponse(http.StatusBadRequest, "invalid input", nil, err.Error())
+		ctx.JSON(http.StatusBadRequest, errRes)
+		return
+	}
+
+	err := h.influencerService.VerifyEmail(ctx.Request.Context(), req.Email, req.Code)
+	if err != nil {
+		errRes := response.ClientResponse(http.StatusBadRequest, "verification failed", nil, err.Error())
+		ctx.JSON(http.StatusBadRequest, errRes)
+		return
+	}
+
+	successRes := response.ClientResponse(http.StatusOK, "email verified successfully", nil, nil)
+	ctx.JSON(http.StatusOK, successRes)
+}
+
+// SendCode godoc
+// @Summary Send verification code to email for influencer
+// @Description Send verification code to the email address for influencer registration
+// @Tags influencer
+// @Accept json
+// @Produce json
+// @Param email body string true "Email"
+// @Success 200 {object} response.Response "Verification code sent successfully"
+// @Failure 400 {object} response.Response "Invalid input"
+// @Failure 500 {object} response.Response "Internal server error"
+// @Router /influencer/verify/send_code [post]
+func (h *InfluencerHandler) SendCode(ctx *gin.Context) {
+	var req struct {
+		Email string `json:"email" binding:"required,email"`
+	}
+
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		errRes := response.ClientResponse(http.StatusBadRequest, "invalid input", nil, err.Error())
+		ctx.JSON(http.StatusBadRequest, errRes)
+		return
+	}
+	err := h.influencerService.SendCode(ctx.Request.Context(), req.Email)
+	if err != nil {
+		errRes := response.ClientResponse(http.StatusInternalServerError, "failed to send verification code", nil, err.Error())
+		ctx.JSON(http.StatusInternalServerError, errRes)
+		return
+	}
+
+	successRes := response.ClientResponse(http.StatusOK, "verification code sent successfully", nil, nil)
+	ctx.JSON(http.StatusOK, successRes)
+}

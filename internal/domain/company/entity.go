@@ -12,7 +12,6 @@ type Entity struct {
 	AccountVerified bool      `db:"account_verified" bson:"account_verified"`
 	AccountType     string    `db:"account_type" bson:"account_type"`
 	Address         string    `db:"address" bson:"address"`
-	OrdersID        *[]string `db:"orders_id" bson:"orders_id"`
 	CreatedAt       time.Time `db:"created_at" bson:"created_at"`
 	UpdatedAt       time.Time `db:"updated_at" bson:"updated_at"`
 }

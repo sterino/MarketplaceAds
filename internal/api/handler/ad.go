@@ -45,14 +45,11 @@ func (h *AdHandler) Create(ctx *gin.Context) {
 		return
 	}
 
-	// Валидация данных
 	if err := req.Validate(); err != nil {
 		errRes := response.ClientResponse(http.StatusBadRequest, "validation failed", nil, err.Error())
 		ctx.JSON(http.StatusBadRequest, errRes)
 		return
 	}
-
-	// Создание объявления
 	adID, err := h.adService.Create(ctx.Request.Context(), req)
 	if err != nil {
 		errRes := response.ClientResponse(http.StatusInternalServerError, "failed to create ad", nil, err.Error())
@@ -78,7 +75,6 @@ func (h *AdHandler) Create(ctx *gin.Context) {
 func (h *AdHandler) GetByID(ctx *gin.Context) {
 	adID := ctx.Param("id")
 
-	// Получение объявления по ID
 	adData, err := h.adService.GetByID(ctx.Request.Context(), adID)
 	if err != nil {
 		errRes := response.ClientResponse(http.StatusNotFound, "ad not found", nil, err.Error())
@@ -100,7 +96,6 @@ func (h *AdHandler) GetByID(ctx *gin.Context) {
 // @Failure 500 {object} response.Response
 // @Router /ad/all [get]
 func (h *AdHandler) GetAll(ctx *gin.Context) {
-	// Получение всех объявлений
 	ads, err := h.adService.GetAll(ctx.Request.Context())
 	if err != nil {
 		errRes := response.ClientResponse(http.StatusInternalServerError, "failed to retrieve ads", nil, err.Error())
@@ -135,8 +130,6 @@ func (h *AdHandler) UpdateStatus(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, errRes)
 		return
 	}
-
-	// Обновление статуса объявления
 	err := h.adService.UpdateStatus(ctx.Request.Context(), adID, req.Status)
 	if err != nil {
 		errRes := response.ClientResponse(http.StatusInternalServerError, "failed to update ad status", nil, err.Error())
@@ -145,5 +138,55 @@ func (h *AdHandler) UpdateStatus(ctx *gin.Context) {
 	}
 
 	successRes := response.ClientResponse(http.StatusOK, "ad status updated successfully", nil, nil)
+	ctx.JSON(http.StatusOK, successRes)
+}
+
+// GetByCompanyID godoc
+// @Summary Get ads by company ID
+// @Description Get all ads for a specific company
+// @Tags ad
+// @Accept json
+// @Produce json
+// @Param id path string true "Company ID"
+// @Success 200 {object} response.Response
+// @Failure 404 {object} response.Response
+// @Failure 500 {object} response.Response
+// @Router /ad/company/{id} [get]
+func (h *AdHandler) GetByCompanyID(ctx *gin.Context) {
+	companyID := ctx.Param("id")
+
+	ads, err := h.adService.GetByCompanyID(ctx.Request.Context(), companyID)
+	if err != nil {
+		errRes := response.ClientResponse(http.StatusInternalServerError, "failed to retrieve ads", nil, err.Error())
+		ctx.JSON(http.StatusInternalServerError, errRes)
+		return
+	}
+
+	successRes := response.ClientResponse(http.StatusOK, "ads retrieved successfully", ads, nil)
+	ctx.JSON(http.StatusOK, successRes)
+}
+
+// Delete godoc
+// @Summary Delete an ad
+// @Description Delete an ad by its ID
+// @Tags ad
+// @Accept json
+// @Produce json
+// @Param id path string true "Ad ID"
+// @Success 200 {object} response.Response
+// @Failure 404 {object} response.Response
+// @Failure 500 {object} response.Response
+// @Router /ad/delete/{id} [delete]
+func (h *AdHandler) Delete(ctx *gin.Context) {
+	adID := ctx.Param("id")
+
+	err := h.adService.Delete(ctx.Request.Context(), adID)
+	if err != nil {
+		errRes := response.ClientResponse(http.StatusInternalServerError, "failed to delete ad", nil, err.Error())
+		ctx.JSON(http.StatusInternalServerError, errRes)
+		return
+	}
+
+	successRes := response.ClientResponse(http.StatusOK, "ad deleted successfully", nil, nil)
 	ctx.JSON(http.StatusOK, successRes)
 }

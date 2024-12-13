@@ -17,41 +17,41 @@ import (
 )
 
 func InitializeAPI(cfg config.Config) (*api.Server, error) {
-	// Подключение к базе данных
+
 	sqlxDB, err := db.ConnectDatabase(cfg)
 	if err != nil {
 		return nil, err
 	}
 
-	// Миграция базы данных
 	err = db.Migrate(sqlxDB)
 	if err != nil {
 		return nil, err
 	}
 
-	// Репозитории
+	applicationRepository := repository.NewApplicationRepository(sqlxDB)
 	companyRepository := repository.NewCompanyRepository(sqlxDB)
+	orderRepository := repository.NewOrderRepository(sqlxDB)
 	influencerRepository := repository.NewInfluencerRepository(sqlxDB)
 	codeRepository := repository.NewCodeRepository(sqlxDB)
 	userRepository := repository.NewUserRepository(sqlxDB)
-	adRepository := repository.NewAdRepository(sqlxDB) // Добавлен репозиторий для объявления
+	adRepository := repository.NewAdRepository(sqlxDB)
 
-	// Утилиты
 	secretKey := jwt.ProvideSecretKey()
 
-	// Сервисы
+	applicationService := service.NewApplicationService(applicationRepository)
+	orderService := service.NewOrderService(orderRepository)
 	companyService := service.NewCompanyService(companyRepository, codeRepository, secretKey)
-	influencerService := service.NewInfluencerService(influencerRepository, secretKey)
+	influencerService := service.NewInfluencerService(influencerRepository, secretKey, codeRepository)
 	userService := service.NewUserService(userRepository)
-	adService := service.NewAdService(adRepository) // Добавлен сервис для объявления
+	adService := service.NewAdService(adRepository)
 
-	// Хэндлеры
+	applicationHandler := handler.NewApplicationHandler(applicationService)
+	orderHandler := handler.NewOrderHandler(orderService)
 	companyHandler := handler.NewCompanyHandler(companyService)
 	influencerHandler := handler.NewInfluencerHandler(influencerService)
 	userHandler := handler.NewUserHandler(userService)
-	adHandler := handler.NewAdHandler(adService) // Добавлен хендлер для объявления
+	adHandler := handler.NewAdHandler(adService)
 
-	// Инициализация сервера
-	server := api.NewServer(companyHandler, influencerHandler, userHandler, adHandler) // Добавлен хендлер для объявления
+	server := api.NewServer(companyHandler, influencerHandler, userHandler, adHandler, orderHandler, applicationHandler)
 	return server, nil
 }

@@ -9,14 +9,13 @@ CREATE TABLE influencers (
                              phone_number VARCHAR,
                              account_verified BOOLEAN DEFAULT FALSE,
                              account_type VARCHAR DEFAULT 'influencer',
-                             platforms TEXT[], -- Массив строк для платформ
+                             platforms TEXT[],
                              followers_count INT DEFAULT 0,
                              category VARCHAR,
                              bio TEXT,
                              address TEXT,
                              created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                              updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                             orders_id TEXT[] -- Массив строк для связанного списка заказов
 );
 
 -- +goose StatementEnd

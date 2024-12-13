@@ -17,6 +17,7 @@ import (
 // @securityDefinitions.apikey BearerAuth
 // @in header
 // @name Authorization
+// @description JWT token
 func main() {
 	config, configErr := config.LoadConfig()
 	if configErr != nil {

@@ -18,11 +18,9 @@ func NewUserRepository(db *sqlx.DB) *UserRepository {
 	}
 }
 
-// GetAccountTypeByID находит AccountType по ID
 func (ur *UserRepository) GetAccountTypeByID(ctx context.Context, id string) (string, error) {
 	var accountType string
 
-	// Проверяем в таблице компаний
 	queryCompany := `
 		SELECT account_type
 		FROM companies
@@ -36,7 +34,6 @@ func (ur *UserRepository) GetAccountTypeByID(ctx context.Context, id string) (st
 		return "", fmt.Errorf("error checking company: %w", err)
 	}
 
-	// Проверяем в таблице инфлюенсеров
 	queryInfluencer := `
 		SELECT account_type
 		FROM influencer
@@ -50,6 +47,5 @@ func (ur *UserRepository) GetAccountTypeByID(ctx context.Context, id string) (st
 		return "", fmt.Errorf("error checking influencer: %w", err)
 	}
 
-	// Если не найдено
 	return "", errors.New("user not found")
 }

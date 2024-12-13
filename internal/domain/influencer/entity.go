@@ -18,5 +18,4 @@ type Entity struct {
 	Address         string    `db:"address" bson:"address"`
 	CreatedAt       time.Time `db:"created_at" bson:"created_at"`
 	UpdatedAt       time.Time `db:"updated_at" bson:"updated_at"`
-	OrdersID        *[]string `db:"orders_id" bson:"orders_id"`
 }

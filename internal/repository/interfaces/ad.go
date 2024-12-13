@@ -18,4 +18,10 @@ type AdRepository interface {
 
 	// UpdateStatus обновляет статус объявления
 	UpdateStatus(ctx context.Context, id string, status string) error
+
+	// GetByCompanyID возвращает объявления по ID компании.
+	GetByCompanyID(ctx context.Context, companyID string) ([]ad.Entity, error)
+
+	// Delete удаляет объявление по его ID.
+	Delete(ctx context.Context, id string) error
 }

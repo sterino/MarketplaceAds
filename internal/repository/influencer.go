@@ -72,3 +72,10 @@ func (ir *InfluencerRepository) GetByID(ctx context.Context, id string) (dest in
 	}
 	return
 }
+
+func (ir *InfluencerRepository) UpdateEmailVerification(ctx context.Context, id string) error {
+	query := `UPDATE ads SET email_verified = $1, updated_at = NOW() WHERE id = $2;`
+
+	_, err := ir.db.ExecContext(ctx, query, true, id)
+	return err
+}

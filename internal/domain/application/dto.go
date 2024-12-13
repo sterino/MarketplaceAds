@@ -1,15 +1,18 @@
-package order
+package application
 
 import (
+	"errors"
 	"time"
 )
 
+var (
+	ErrorNotFound = errors.New("ad not found")
+)
+
 type CreateRequest struct {
-	AdID         string  `json:"ad_id" binding:"required"`
-	CompanyID    string  `json:"company_id" binding:"required"`
-	InfluencerID string  `json:"influencer_id" binding:"required"`
-	Price        float64 `json:"price" binding:"required"`
-	Description  string  `json:"description"`
+	AdID         string `json:"ad_id" binding:"required"`
+	CompanyID    string `json:"company_id" binding:"required"`
+	InfluencerID string `json:"influencer_id" binding:"required"`
 }
 
 type UpdateStatusRequest struct {
@@ -22,8 +25,6 @@ type Response struct {
 	CompanyID    string    `json:"company_id"`
 	InfluencerID string    `json:"influencer_id"`
 	Status       string    `json:"status"`
-	Price        float64   `json:"price"`
-	Description  string    `json:"description,omitempty"`
 	CreatedAt    time.Time `json:"created_at"`
 	UpdatedAt    time.Time `json:"updated_at"`
 }
@@ -35,9 +36,15 @@ func ParseFromEntity(entity Entity) Response {
 		CompanyID:    entity.CompanyID,
 		InfluencerID: entity.InfluencerID,
 		Status:       entity.Status,
-		Price:        entity.Price,
-		Description:  entity.Description,
 		CreatedAt:    entity.CreatedAt,
 		UpdatedAt:    entity.UpdatedAt,
 	}
+}
+
+func ParseEntities(entities []Entity) []Response {
+	responses := make([]Response, len(entities))
+	for i, entity := range entities {
+		responses[i] = ParseFromEntity(entity)
+	}
+	return responses
 }

@@ -54,13 +54,16 @@ func ParseFromEntities(data []Entity) (res []Response) {
 
 func ParseFromEntity(entity Entity) Response {
 	return Response{
-		ID:          entity.ID,
-		Name:        entity.Name,
-		Email:       entity.Email,
-		PhoneNumber: entity.PhoneNumber,
-		Address:     entity.Address,
-		CreatedAt:   entity.CreatedAt,
-		UpdatedAt:   entity.UpdatedAt,
+		ID:              entity.ID,
+		Name:            entity.Name,
+		Email:           entity.Email,
+		EmailVerified:   entity.EmailVerified,
+		PhoneNumber:     entity.PhoneNumber,
+		AccountVerified: entity.AccountVerified,
+		AccountType:     entity.AccountType,
+		Address:         entity.Address,
+		CreatedAt:       entity.CreatedAt,
+		UpdatedAt:       entity.UpdatedAt,
 	}
 }
 

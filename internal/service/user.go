@@ -18,7 +18,6 @@ func NewUserService(userRepository interfaces.UserRepository) services.UserServi
 	}
 }
 
-// GetAccountTypeByID возвращает тип аккаунта пользователя (company/influencer) по его ID
 func (s *UserService) GetAccountTypeByID(ctx context.Context, userID string) (string, error) {
 	accountType, err := s.userRepository.GetAccountTypeByID(ctx, userID)
 	if err != nil {

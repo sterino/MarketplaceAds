@@ -153,10 +153,12 @@ func (s *CompanyService) VerifyEmail(ctx context.Context, email, code string) er
 		return err
 	}
 
-	_, err = s.companyRepository.GetByEmail(ctx, email)
+	user, err := s.GetByEmail(ctx, email)
 	if err != nil {
 		return err
 	}
+
+	err = s.companyRepository.UpdateEmailVerification(ctx, user.ID)
 
 	return nil
 

@@ -19,7 +19,7 @@ func NewAdService(adRepository interfaces.AdRepository) services.AdService {
 }
 
 func (s *AdService) Create(ctx context.Context, input ad.CreateRequest) (string, error) {
-	// Здесь можно добавить дополнительную валидацию или обработку данных
+
 	id, err := s.adRepository.Create(ctx, input)
 	if err != nil {
 		return "", err
@@ -35,7 +35,7 @@ func (s *AdService) GetByID(ctx context.Context, id string) (ad.Response, error)
 		}
 		return ad.Response{}, err
 	}
-	// Преобразуем сущность в response
+
 	res := ad.ParseFromEntity(adEntity)
 	return res, nil
 }
@@ -45,18 +45,28 @@ func (s *AdService) GetAll(ctx context.Context) ([]ad.Response, error) {
 	if err != nil {
 		return nil, err
 	}
-	// Преобразуем все сущности в response
+
 	res := ad.ParseFromEntities(ads)
 	return res, nil
 }
 
 func (s *AdService) UpdateStatus(ctx context.Context, id string, status string) error {
-	// Проверяем, существует ли объявление перед обновлением
 	_, err := s.adRepository.GetByID(ctx, id)
 	if err != nil {
 		return err
 	}
 
-	// Обновляем статус объявления
 	return s.adRepository.UpdateStatus(ctx, id, status)
+}
+
+func (s *AdService) GetByCompanyID(ctx context.Context, companyID string) ([]ad.Response, error) {
+	ads, err := s.adRepository.GetByCompanyID(ctx, companyID)
+	if err != nil {
+		return nil, err
+	}
+	return ad.ParseFromEntities(ads), nil
+}
+
+func (s *AdService) Delete(ctx context.Context, id string) error {
+	return s.adRepository.Delete(ctx, id)
 }

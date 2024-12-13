@@ -134,24 +134,18 @@ func (h *CompanyHandler) SendCode(ctx *gin.Context) {
 		Email string `json:"email" binding:"required,email"`
 	}
 
-	// Привязка данных из тела запроса
 	if err := ctx.ShouldBindJSON(&req); err != nil {
-		// Возвращаем ошибку при неправильном вводе
 		errRes := response.ClientResponse(http.StatusBadRequest, "invalid input", nil, err.Error())
 		ctx.JSON(http.StatusBadRequest, errRes)
 		return
 	}
-
-	// Отправка кода верификации
 	err := h.companyService.SendCode(ctx.Request.Context(), req.Email)
 	if err != nil {
-		// Ошибка при отправке кода
 		errRes := response.ClientResponse(http.StatusInternalServerError, "failed to send verification code", nil, err.Error())
 		ctx.JSON(http.StatusInternalServerError, errRes)
 		return
 	}
 
-	// Успешная отправка кода
 	successRes := response.ClientResponse(http.StatusOK, "verification code sent successfully", nil, nil)
 	ctx.JSON(http.StatusOK, successRes)
 }

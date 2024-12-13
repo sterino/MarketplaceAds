@@ -10,43 +10,70 @@ func InitRoutes(
 	companyHandler *handler.CompanyHandler,
 	influencerHandler *handler.InfluencerHandler,
 	userHandler *handler.UserHandler,
-	adHandler *handler.AdHandler, // Добавлен хендлер для объявлений
+	adHandler *handler.AdHandler,
+	orderHandler *handler.OrderHandler,
+	applicationHandler *handler.ApplicationHandler,
 ) {
 
-	// Routes for user
 	user := router.Group("/user")
 	{
 		user.GET("/account_type/:id", userHandler.GetAccountType)
-		// Add other user routes as needed
 	}
 
-	// Routes for company
 	company := router.Group("/company")
 	{
 		company.POST("/login", companyHandler.Login)
 		company.POST("/register", companyHandler.Register)
 		company.POST("/verify", companyHandler.VerifyEmail)
 		company.POST("/verify/send_code", companyHandler.SendCode)
-		// Add other company routes as needed
+		company.GET("/:id", companyHandler.GetByID)
+		company.GET("/email/:email ", companyHandler.GetByEmail)
 	}
 
-	// Routes for influencer
 	influencer := router.Group("/influencer")
 	{
 		influencer.POST("/login", influencerHandler.Login)
 		influencer.POST("/register", influencerHandler.Register)
-		// Add other influencer routes as needed
+		influencer.POST("/verify", influencerHandler.VerifyEmail)
+		influencer.POST("/verify/send_code", influencerHandler.SendCode)
+		influencer.GET("/:id", companyHandler.GetByID)
+		influencer.GET("email/:email", companyHandler.GetByEmail)
 	}
 
-	// Routes for ads
 	ad := router.Group("/ad")
 	{
-		ad.POST("/create", adHandler.Create)          // Создание объявления
-		ad.GET("/:id", adHandler.GetByID)             // Получение объявления по ID
-		ad.GET("/all", adHandler.GetAll)              // Получение всех объявлений
-		ad.PUT("/:id/status", adHandler.UpdateStatus) // Обновление статуса объявления
-		// Add other ad-related routes as needed
+		ad.POST("/create", adHandler.Create)
+		ad.GET("/:id", adHandler.GetByID)
+		ad.GET("/all", adHandler.GetAll)
+		ad.PUT("/:id/status", adHandler.UpdateStatus)
+		ad.GET("/company/:id", adHandler.GetByCompanyID)
+		ad.DELETE("/delete/:id", adHandler.Delete)
 	}
 
-	// Add other routes as needed
+	order := router.Group("/order")
+	{
+		order.POST("/create", orderHandler.Create)
+		order.GET("/:id", orderHandler.GetByID)
+		order.PUT("/:id/status", orderHandler.UpdateStatus)
+		order.GET("/company/:id", orderHandler.GetByCompanyID)
+		order.GET("/influencer/:id", orderHandler.GetByInfluencerID)
+		order.DELETE("/:id/delete", orderHandler.Delete)
+	}
+
+	application := router.Group("/application")
+	{
+		application.POST("/create", applicationHandler.Create)
+		application.GET("/:id", applicationHandler.GetByID)
+		application.GET("/ad/:id", applicationHandler.GetByAdID)
+		application.GET("/influencer/:id", applicationHandler.GetByInfluencer)
+		application.PUT("/:id/status", applicationHandler.UpdateStatus)
+		application.DELETE("/:id/delete", applicationHandler.Delete)
+	}
+
+	//notification := router.Group("/notification")
+	//{
+	//	notification.POST("/send", notificationHandler.Send)
+	//	notification.GET("/user/:id", notificationHandler.GetByUserID)
+	//	notification.PUT("/:id/mark_as_read", NotificationHandler.MarkAsRead)
+	//}
 }

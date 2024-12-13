@@ -11,4 +11,6 @@ type InfluencerService interface {
 	GetByEmail(ctx context.Context, email string) (influencer.Response, error)
 	GetByEmailEntity(ctx context.Context, email string) (influencer.Entity, error)
 	GetByID(ctx context.Context, input string) (res influencer.Response, err error)
+	SendCode(ctx context.Context, input string) error
+	VerifyEmail(ctx context.Context, email, code string) error
 }

@@ -4,6 +4,7 @@ import (
 	"Marketplace/internal/domain/influencer"
 	"Marketplace/internal/repository/interfaces"
 	services "Marketplace/internal/service/interfaces"
+	"Marketplace/internal/utils/email"
 	"Marketplace/internal/utils/jwt"
 	"Marketplace/internal/utils/password"
 	"context"
@@ -13,12 +14,14 @@ import (
 type InfluencerService struct {
 	influencerRepository interfaces.InfluencerRepository
 	secretKey            []byte
+	codeRepository       interfaces.CodeRepository
 }
 
-func NewInfluencerService(influencerRepository interfaces.InfluencerRepository, secretKey []byte) services.InfluencerService {
+func NewInfluencerService(influencerRepository interfaces.InfluencerRepository, secretKey []byte, codeRepository interfaces.CodeRepository) services.InfluencerService {
 	return &InfluencerService{
 		influencerRepository: influencerRepository,
 		secretKey:            secretKey,
+		codeRepository:       codeRepository,
 	}
 }
 
@@ -115,4 +118,52 @@ func (s *InfluencerService) Create(ctx context.Context, data influencer.Register
 	}
 
 	return
+}
+
+func (s *InfluencerService) SendCode(ctx context.Context, input string) error {
+	data, err := s.influencerRepository.GetByEmail(ctx, input)
+	if err != nil {
+		if !errors.Is(err, influencer.ErrorNotFound) {
+			return err
+		}
+		return err
+	}
+
+	code := email.GenerateCode()
+	err = email.SendVerificationCode(data.Email, code)
+	if err != nil {
+		return err
+	}
+
+	err = s.codeRepository.SaveCode(ctx, data.Email, code)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *InfluencerService) VerifyEmail(ctx context.Context, email, code string) error {
+	storedCode, err := s.codeRepository.GetCode(ctx, email)
+	if err != nil {
+		return errors.New("verification code not found or expired")
+	}
+
+	if storedCode != code {
+		return errors.New("invalid verification code")
+	}
+
+	err = s.codeRepository.DeleteCode(ctx, email)
+	if err != nil {
+		return err
+	}
+
+	user, err := s.GetByEmail(ctx, email)
+	if err != nil {
+		return err
+	}
+
+	err = s.influencerRepository.UpdateEmailVerification(ctx, user.ID)
+
+	return nil
+
 }
