@@ -9,7 +9,7 @@ CREATE TABLE orders (
                         price DECIMAL NOT NULL,
                         description TEXT, -- Описание заказа
                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+                        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 -- +goose StatementEnd
 
