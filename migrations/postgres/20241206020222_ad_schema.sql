@@ -1,7 +1,7 @@
 -- +goose Up
 -- +goose StatementBegin
 CREATE TABLE ads (
-                     id SERIAL PRIMARY KEY,
+                     id VARCHAR NOT NULL,
                      company_id VARCHAR NOT NULL,
                      title VARCHAR NOT NULL,
                      description TEXT NOT NULL,

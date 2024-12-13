@@ -1,7 +1,7 @@
 -- +goose Up
 -- +goose StatementBegin
 CREATE TABLE companies (
-                           id SERIAL PRIMARY KEY,
+                           id VARCHAR NOT NULL,
                            name VARCHAR NOT NULL,
                            email VARCHAR UNIQUE NOT NULL,
                            email_verified BOOLEAN DEFAULT FALSE,

@@ -1,7 +1,7 @@
 -- +goose Up
 -- +goose StatementBegin
 CREATE TABLE applications (
-                              id SERIAL PRIMARY KEY,
+                              id VARCHAR NOT NULL,
                               ad_id VARCHAR NOT NULL,
                               company_id VARCHAR NOT NULL,
                               influencer_id VARCHAR NOT NULL,
