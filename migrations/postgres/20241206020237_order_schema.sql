@@ -10,9 +10,6 @@ CREATE TABLE orders (
                         description TEXT, -- Описание заказа
                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                        FOREIGN KEY (company_id) REFERENCES companies(id),
-                        FOREIGN KEY (ad_id) REFERENCES ads(id),
-                        FOREIGN KEY (influencer_id) REFERENCES influencers(id)
 );
 -- +goose StatementEnd
 

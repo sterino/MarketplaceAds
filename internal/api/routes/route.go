@@ -76,4 +76,8 @@ func InitRoutes(
 	//	notification.GET("/user/:id", notificationHandler.GetByUserID)
 	//	notification.PUT("/:id/mark_as_read", NotificationHandler.MarkAsRead)
 	//}
+
+	//moderator := router.Group("/moderator)
+	//{
+	//	moderator.GET("/moderator/:list
 }

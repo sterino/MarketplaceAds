@@ -8,8 +8,6 @@ CREATE TABLE applications (
                               status VARCHAR DEFAULT 'pending', -- Статус заявки
                               created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                               updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                              FOREIGN KEY (ad_id) REFERENCES ads(id),
-                              FOREIGN KEY (influencer_id) REFERENCES influencers(id)
 );
 -- +goose StatementEnd
 
