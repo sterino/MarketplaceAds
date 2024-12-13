@@ -31,6 +31,7 @@ func (cr *CodeRepository) SaveCode(ctx context.Context, email, code string) erro
 }
 
 func (cr *CodeRepository) GetCode(ctx context.Context, email string) (string, error) {
+	log.Printf(email)
 	var code string
 	query := `SELECT code FROM email_verification_codes WHERE email = $1;`
 	err := cr.db.GetContext(ctx, &code, query, email)
