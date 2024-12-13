@@ -5,6 +5,7 @@ import (
 	"Marketplace/internal/service/interfaces"
 	"Marketplace/internal/utils/response"
 	"github.com/gin-gonic/gin"
+	"log"
 	"net/http"
 )
 
@@ -137,6 +138,7 @@ func (h *AdHandler) GetAll(ctx *gin.Context) {
 func (h *AdHandler) UpdateStatus(ctx *gin.Context) {
 	user, exists := ctx.Get("user")
 	if !exists || user == nil {
+		log.Printf("User not found in context: %v", user)
 		errRes := response.ClientResponse(http.StatusUnauthorized, "User not authorized", nil, nil)
 		ctx.JSON(http.StatusUnauthorized, errRes)
 		return
