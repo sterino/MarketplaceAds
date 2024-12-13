@@ -8,7 +8,7 @@ import (
 // AdRepository интерфейс для работы с репозиторием объявлений
 type AdRepository interface {
 	// Create создает новое объявление в базе данных
-	Create(ctx context.Context, data ad.Entity) (string, error)
+	Create(ctx context.Context, data ad.CreateRequest) (string, error)
 
 	// GetByID возвращает объявление по его ID
 	GetByID(ctx context.Context, id string) (ad.Entity, error)

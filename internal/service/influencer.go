@@ -9,7 +9,6 @@ import (
 	"Marketplace/internal/utils/password"
 	"context"
 	"errors"
-	"github.com/google/uuid"
 )
 
 type InfluencerService struct {
@@ -103,9 +102,7 @@ func (s *InfluencerService) GetByID(ctx context.Context, id string) (res influen
 }
 
 func (s *InfluencerService) Create(ctx context.Context, data influencer.RegisterRequest) (id string, err error) {
-	influencerId := uuid.New().String()
-	id, err = s.influencerRepository.Create(ctx, influencer.Entity{
-		ID:             influencerId,
+	id, err = s.influencerRepository.Create(ctx, influencer.RegisterRequest{
 		Name:           data.Name,
 		Email:          data.Email,
 		Password:       data.Password,

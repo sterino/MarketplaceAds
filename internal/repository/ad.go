@@ -6,6 +6,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -17,17 +18,17 @@ func NewAdRepository(db *sqlx.DB) interfaces.AdRepository {
 	return &AdRepository{db: db}
 }
 
-func (ar *AdRepository) Create(ctx context.Context, data ad.Entity) (string, error) {
+func (ar *AdRepository) Create(ctx context.Context, data ad.CreateRequest) (string, error) {
 
 	if err := data.Validate(); err != nil {
 		return "", err
 	}
-
+	adId := uuid.New().String()
 	query := `
 		INSERT INTO ads (id, title, description, price, status, company_id)
 		VALUES ($1, $2, $3, $4, $5, $6)
 		RETURNING id;`
-	args := []interface{}{data.Title, data.Description, data.Price, "open", data.CompanyID}
+	args := []interface{}{adId, data.Title, data.Description, data.Price, "open", data.CompanyID}
 
 	var id string
 	err := ar.db.QueryRowContext(ctx, query, args...).Scan(&id)
