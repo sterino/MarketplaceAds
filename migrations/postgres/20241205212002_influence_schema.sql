@@ -15,7 +15,7 @@ CREATE TABLE influencers (
                              bio TEXT,
                              address TEXT,
                              created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- +goose StatementEnd
