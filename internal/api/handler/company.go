@@ -5,6 +5,7 @@ import (
 	"Marketplace/internal/service/interfaces"
 	"Marketplace/internal/utils/response"
 	"github.com/gin-gonic/gin"
+	"log"
 	"net/http"
 )
 
@@ -101,12 +102,14 @@ func (h *CompanyHandler) VerifyEmail(ctx *gin.Context) {
 		Email string `json:"email"`
 		Code  string `json:"code"`
 	}
+
+	log.Printf("Request received with email: %s, code: %s", req.Email, req.Code)
 	if err := ctx.BindJSON(&req); err != nil {
 		errRes := response.ClientResponse(http.StatusBadRequest, "invalid input", nil, err.Error())
 		ctx.JSON(http.StatusBadRequest, errRes)
 		return
 	}
-
+	log.Printf("After BindJSON - Email: %s", req.Email)
 	err := h.companyService.VerifyEmail(ctx.Request.Context(), req.Email, req.Code)
 	if err != nil {
 		errRes := response.ClientResponse(http.StatusBadRequest, "verification failed", nil, err.Error())
