@@ -6,6 +6,7 @@ import (
 	services "Marketplace/internal/service/interfaces"
 	"context"
 	"errors"
+	"github.com/google/uuid"
 )
 
 type AdService struct {
@@ -19,8 +20,14 @@ func NewAdService(adRepository interfaces.AdRepository) services.AdService {
 }
 
 func (s *AdService) Create(ctx context.Context, input ad.CreateRequest) (string, error) {
-
-	id, err := s.adRepository.Create(ctx, input)
+	adID := uuid.New().String()
+	id, err := s.adRepository.Create(ctx, ad.Entity{
+		ID:          adID,
+		CompanyID:   input.CompanyID,
+		Title:       input.Title,
+		Description: input.Description,
+		Price:       input.Price,
+	})
 	if err != nil {
 		return "", err
 	}

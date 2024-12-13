@@ -19,12 +19,13 @@ func NewInfluencerRepository(db *sqlx.DB) interfaces.InfluencerRepository {
 	}
 }
 
-func (ir *InfluencerRepository) Create(ctx context.Context, data influencer.RegisterRequest) (id string, err error) {
+func (ir *InfluencerRepository) Create(ctx context.Context, data influencer.Entity) (id string, err error) {
 	query := `
-		INSERT INTO influencer (name, email, password, phone_number, platforms, followers_count, category, bio, address)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+		INSERT INTO influencer (id, name, email, password, phone_number, platforms, followers_count, category, bio, address)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
 		RETURNING id;`
 	args := []any{
+		data.ID,
 		data.Name,
 		data.Email,
 		data.Password,

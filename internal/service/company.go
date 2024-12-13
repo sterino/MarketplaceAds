@@ -9,6 +9,7 @@ import (
 	"Marketplace/internal/utils/password"
 	"context"
 	"errors"
+	"github.com/google/uuid"
 )
 
 type CompanyService struct {
@@ -102,7 +103,9 @@ func (s *CompanyService) GetByID(ctx context.Context, input string) (res company
 }
 
 func (s *CompanyService) Create(ctx context.Context, data company.RegisterRequest) (id string, err error) {
-	id, err = s.companyRepository.Create(ctx, company.RegisterRequest{
+	companyID := uuid.New().String()
+	id, err = s.companyRepository.Create(ctx, company.Entity{
+		ID:          companyID,
 		Name:        data.Name,
 		Email:       data.Email,
 		Password:    data.Password,

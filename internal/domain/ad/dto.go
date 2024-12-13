@@ -12,7 +12,7 @@ var (
 )
 
 type CreateRequest struct {
-	CompanyID   string  `json:"companyID"`
+	CompanyID   string  `json:"company_id"`
 	Title       string  `json:"title"`
 	Description string  `json:"description"`
 	Price       float64 `json:"price"`

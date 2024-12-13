@@ -19,11 +19,12 @@ func NewCompanyRepository(db *sqlx.DB) interfaces.CompanyRepository {
 	}
 }
 
-func (cr *CompanyRepository) Create(ctx context.Context, data company.RegisterRequest) (id string, err error) {
+func (cr *CompanyRepository) Create(ctx context.Context, data company.Entity) (id string, err error) {
 	query := `
-		INSERT INTO companies (name, email, password, phone_number, address)
-		VALUES ($1, $2, $3, $4, $5) RETURNING id;`
+		INSERT INTO companies (id, name, email, password, phone_number, address)
+		VALUES ($1, $2, $3, $4, $5, $6) RETURNING id;`
 	args := []any{
+		data.ID,
 		data.Name,
 		data.Email,
 		data.Password,
