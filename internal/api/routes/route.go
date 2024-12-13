@@ -27,7 +27,7 @@ func InitRoutes(
 		company.POST("/verify", companyHandler.VerifyEmail)
 		company.POST("/verify/send_code", companyHandler.SendCode)
 		company.GET("/:id", companyHandler.GetByID)
-		company.GET("/email/:email ", companyHandler.GetByEmail)
+		company.GET("/email/:email", companyHandler.GetByEmail)
 	}
 
 	influencer := router.Group("/influencer")
