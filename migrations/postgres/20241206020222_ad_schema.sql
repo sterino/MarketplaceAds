@@ -8,7 +8,7 @@ CREATE TABLE ads (
                      price DECIMAL NOT NULL,
                      status VARCHAR DEFAULT 'open',
                      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- +goose StatementEnd

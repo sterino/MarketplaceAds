@@ -7,7 +7,7 @@ CREATE TABLE applications (
                               influencer_id VARCHAR NOT NULL,
                               status VARCHAR DEFAULT 'pending', -- Статус заявки
                               created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                              updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                              updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 -- +goose StatementEnd
 
