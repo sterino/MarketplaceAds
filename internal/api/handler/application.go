@@ -28,8 +28,15 @@ func NewApplicationHandler(service interfaces.ApplicationService) *ApplicationHa
 // @Success 201 {object} response.Response
 // @Failure 400 {object} response.Response
 // @Failure 500 {object} response.Response
+// @Security BearerAuth
 // @Router /application/create [post]
 func (h *ApplicationHandler) Create(ctx *gin.Context) {
+	user, exists := ctx.Get("user")
+	if !exists || user == nil {
+		errRes := response.ClientResponse(http.StatusUnauthorized, "User not authorized", nil, nil)
+		ctx.JSON(http.StatusUnauthorized, errRes)
+		return
+	}
 	req := application.CreateRequest{}
 	if err := ctx.BindJSON(&req); err != nil {
 		errRes := response.ClientResponse(http.StatusBadRequest, "Invalid request data", nil, err.Error())
@@ -58,8 +65,15 @@ func (h *ApplicationHandler) Create(ctx *gin.Context) {
 // @Success 200 {object} response.Response
 // @Failure 404 {object} response.Response
 // @Failure 500 {object} response.Response
+// @Security BearerAuth
 // @Router /application/ad/{id} [get]
 func (h *ApplicationHandler) GetByAdID(ctx *gin.Context) {
+	user, exists := ctx.Get("user")
+	if !exists || user == nil {
+		errRes := response.ClientResponse(http.StatusUnauthorized, "User not authorized", nil, nil)
+		ctx.JSON(http.StatusUnauthorized, errRes)
+		return
+	}
 	adID := ctx.Param("id")
 	if adID == "" {
 		errRes := response.ClientResponse(http.StatusBadRequest, "Ad ID is required", nil, nil)
@@ -88,8 +102,15 @@ func (h *ApplicationHandler) GetByAdID(ctx *gin.Context) {
 // @Success 200 {object} response.Response
 // @Failure 404 {object} response.Response
 // @Failure 500 {object} response.Response
+// @Security BearerAuth
 // @Router /application/influencer/{id} [get]
 func (h *ApplicationHandler) GetByInfluencer(ctx *gin.Context) {
+	user, exists := ctx.Get("user")
+	if !exists || user == nil {
+		errRes := response.ClientResponse(http.StatusUnauthorized, "User not authorized", nil, nil)
+		ctx.JSON(http.StatusUnauthorized, errRes)
+		return
+	}
 	influencerID := ctx.Param("id")
 	if influencerID == "" {
 		errRes := response.ClientResponse(http.StatusBadRequest, "Influencer ID is required", nil, nil)
@@ -119,8 +140,15 @@ func (h *ApplicationHandler) GetByInfluencer(ctx *gin.Context) {
 // @Success 200 {object} response.Response
 // @Failure 400 {object} response.Response
 // @Failure 500 {object} response.Response
+// @Security BearerAuth
 // @Router /application/{id}/status [put]
 func (h *ApplicationHandler) UpdateStatus(ctx *gin.Context) {
+	user, exists := ctx.Get("user")
+	if !exists || user == nil {
+		errRes := response.ClientResponse(http.StatusUnauthorized, "User not authorized", nil, nil)
+		ctx.JSON(http.StatusUnauthorized, errRes)
+		return
+	}
 	id := ctx.Param("id")
 	if id == "" {
 		errRes := response.ClientResponse(http.StatusBadRequest, "Application ID is required", nil, nil)
@@ -156,8 +184,15 @@ func (h *ApplicationHandler) UpdateStatus(ctx *gin.Context) {
 // @Success 200 {object} response.Response
 // @Failure 400 {object} response.Response
 // @Failure 500 {object} response.Response
+// @Security BearerAuth
 // @Router /application/{id}/delete [delete]
 func (h *ApplicationHandler) Delete(ctx *gin.Context) {
+	user, exists := ctx.Get("user")
+	if !exists || user == nil {
+		errRes := response.ClientResponse(http.StatusUnauthorized, "User not authorized", nil, nil)
+		ctx.JSON(http.StatusUnauthorized, errRes)
+		return
+	}
 	id := ctx.Param("id")
 	if id == "" {
 		errRes := response.ClientResponse(http.StatusBadRequest, "Application ID is required", nil, nil)
@@ -186,8 +221,15 @@ func (h *ApplicationHandler) Delete(ctx *gin.Context) {
 // @Success 200 {object} response.Response
 // @Failure 404 {object} response.Response
 // @Failure 500 {object} response.Response
+// @Security BearerAuth
 // @Router /application/{id} [get]
 func (h *ApplicationHandler) GetByID(ctx *gin.Context) {
+	user, exists := ctx.Get("user")
+	if !exists || user == nil {
+		errRes := response.ClientResponse(http.StatusUnauthorized, "User not authorized", nil, nil)
+		ctx.JSON(http.StatusUnauthorized, errRes)
+		return
+	}
 	id := ctx.Param("id")
 	if id == "" {
 		errRes := response.ClientResponse(http.StatusBadRequest, "Application ID is required", nil, nil)

@@ -31,14 +31,13 @@ func NewAdHandler(service interfaces.AdService) *AdHandler {
 // @Security BearerAuth
 // @Router /ad/create [post]
 func (h *AdHandler) Create(ctx *gin.Context) {
+	req := ad.CreateRequest{}
 	user, exists := ctx.Get("user")
 	if !exists || user == nil {
 		errRes := response.ClientResponse(http.StatusUnauthorized, "User not authorized", nil, nil)
 		ctx.JSON(http.StatusUnauthorized, errRes)
 		return
 	}
-
-	req := ad.CreateRequest{}
 	if err := ctx.BindJSON(&req); err != nil {
 		errRes := response.ClientResponse(http.StatusBadRequest, "invalid input", nil, err.Error())
 		ctx.JSON(http.StatusBadRequest, errRes)
@@ -71,9 +70,17 @@ func (h *AdHandler) Create(ctx *gin.Context) {
 // @Success 200 {object} response.Response
 // @Failure 404 {object} response.Response
 // @Failure 500 {object} response.Response
+// @Security BearerAuth
 // @Router /ad/{id} [get]
 func (h *AdHandler) GetByID(ctx *gin.Context) {
 	adID := ctx.Param("id")
+
+	user, exists := ctx.Get("user")
+	if !exists || user == nil {
+		errRes := response.ClientResponse(http.StatusUnauthorized, "User not authorized", nil, nil)
+		ctx.JSON(http.StatusUnauthorized, errRes)
+		return
+	}
 
 	adData, err := h.adService.GetByID(ctx.Request.Context(), adID)
 	if err != nil {
@@ -94,8 +101,15 @@ func (h *AdHandler) GetByID(ctx *gin.Context) {
 // @Produce json
 // @Success 200 {object} response.Response
 // @Failure 500 {object} response.Response
+// @Security BearerAuth
 // @Router /ad/all [get]
 func (h *AdHandler) GetAll(ctx *gin.Context) {
+	user, exists := ctx.Get("user")
+	if !exists || user == nil {
+		errRes := response.ClientResponse(http.StatusUnauthorized, "User not authorized", nil, nil)
+		ctx.JSON(http.StatusUnauthorized, errRes)
+		return
+	}
 	ads, err := h.adService.GetAll(ctx.Request.Context())
 	if err != nil {
 		errRes := response.ClientResponse(http.StatusInternalServerError, "failed to retrieve ads", nil, err.Error())
@@ -118,8 +132,15 @@ func (h *AdHandler) GetAll(ctx *gin.Context) {
 // @Success 200 {object} response.Response
 // @Failure 400 {object} response.Response
 // @Failure 500 {object} response.Response
+// @Security BearerAuth
 // @Router /ad/{id}/status [put]
 func (h *AdHandler) UpdateStatus(ctx *gin.Context) {
+	user, exists := ctx.Get("user")
+	if !exists || user == nil {
+		errRes := response.ClientResponse(http.StatusUnauthorized, "User not authorized", nil, nil)
+		ctx.JSON(http.StatusUnauthorized, errRes)
+		return
+	}
 	adID := ctx.Param("id")
 	var req struct {
 		Status string `json:"status"`
@@ -151,8 +172,15 @@ func (h *AdHandler) UpdateStatus(ctx *gin.Context) {
 // @Success 200 {object} response.Response
 // @Failure 404 {object} response.Response
 // @Failure 500 {object} response.Response
+// @Security BearerAuth
 // @Router /ad/company/{id} [get]
 func (h *AdHandler) GetByCompanyID(ctx *gin.Context) {
+	user, exists := ctx.Get("user")
+	if !exists || user == nil {
+		errRes := response.ClientResponse(http.StatusUnauthorized, "User not authorized", nil, nil)
+		ctx.JSON(http.StatusUnauthorized, errRes)
+		return
+	}
 	companyID := ctx.Param("id")
 
 	ads, err := h.adService.GetByCompanyID(ctx.Request.Context(), companyID)
@@ -176,9 +204,16 @@ func (h *AdHandler) GetByCompanyID(ctx *gin.Context) {
 // @Success 200 {object} response.Response
 // @Failure 404 {object} response.Response
 // @Failure 500 {object} response.Response
+// @Security BearerAuth
 // @Router /ad/delete/{id} [delete]
 func (h *AdHandler) Delete(ctx *gin.Context) {
 	adID := ctx.Param("id")
+
+	user, _ := ctx.Get("user")
+	if user == nil {
+		response.ClientResponse(http.StatusUnauthorized, "User not authorized", nil, nil)
+		return
+	}
 
 	err := h.adService.Delete(ctx.Request.Context(), adID)
 	if err != nil {

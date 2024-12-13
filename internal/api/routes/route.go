@@ -50,7 +50,7 @@ func InitRoutes(
 		ad.DELETE("/delete/:id", adHandler.Delete)
 	}
 
-	order := router.Group("/order")
+	order := router.Group("/order").Use(JWTMiddleware())
 	{
 		order.POST("/create", orderHandler.Create)
 		order.GET("/:id", orderHandler.GetByID)
@@ -60,7 +60,7 @@ func InitRoutes(
 		order.DELETE("/:id/delete", orderHandler.Delete)
 	}
 
-	application := router.Group("/application")
+	application := router.Group("/application").Use(JWTMiddleware())
 	{
 		application.POST("/create", applicationHandler.Create)
 		application.GET("/:id", applicationHandler.GetByID)

@@ -26,8 +26,15 @@ func NewOrderHandler(service interfaces.OrderService) *OrderHandler {
 // @Success 201 {object} response.Response "Order created successfully"
 // @Failure 400 {object} response.Response "Invalid input"
 // @Failure 500 {object} response.Response "Failed to create order"
+// @Security BearerAuth
 // @Router /order [post]
 func (h *OrderHandler) Create(ctx *gin.Context) {
+	user, exists := ctx.Get("user")
+	if !exists || user == nil {
+		errRes := response.ClientResponse(http.StatusUnauthorized, "User not authorized", nil, nil)
+		ctx.JSON(http.StatusUnauthorized, errRes)
+		return
+	}
 	var req order.CreateRequest
 	if err := ctx.BindJSON(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, response.ClientResponse(http.StatusBadRequest, "invalid input", nil, err.Error()))
@@ -53,8 +60,15 @@ func (h *OrderHandler) Create(ctx *gin.Context) {
 // @Success 200 {object} response.Response "Order retrieved successfully"
 // @Failure 404 {object} response.Response "Order not found"
 // @Failure 500 {object} response.Response "Failed to retrieve order"
+// @Security BearerAuth
 // @Router /order/{id} [get]
 func (h *OrderHandler) GetByID(ctx *gin.Context) {
+	user, exists := ctx.Get("user")
+	if !exists || user == nil {
+		errRes := response.ClientResponse(http.StatusUnauthorized, "User not authorized", nil, nil)
+		ctx.JSON(http.StatusUnauthorized, errRes)
+		return
+	}
 	id := ctx.Param("id")
 	res, err := h.orderService.GetByID(ctx.Request.Context(), id)
 	if err != nil {
@@ -76,8 +90,15 @@ func (h *OrderHandler) GetByID(ctx *gin.Context) {
 // @Success 200 {object} response.Response "Status updated successfully"
 // @Failure 400 {object} response.Response "Invalid input"
 // @Failure 500 {object} response.Response "Failed to update status"
+// @Security BearerAuth
 // @Router /order/{id}/status [put]
 func (h *OrderHandler) UpdateStatus(ctx *gin.Context) {
+	user, exists := ctx.Get("user")
+	if !exists || user == nil {
+		errRes := response.ClientResponse(http.StatusUnauthorized, "User not authorized", nil, nil)
+		ctx.JSON(http.StatusUnauthorized, errRes)
+		return
+	}
 	id := ctx.Param("id")
 	var req order.UpdateStatusRequest
 	if err := ctx.BindJSON(&req); err != nil {
@@ -103,8 +124,15 @@ func (h *OrderHandler) UpdateStatus(ctx *gin.Context) {
 // @Param id path string true "Company ID"
 // @Success 200 {object} response.Response "Orders retrieved successfully"
 // @Failure 500 {object} response.Response "Failed to retrieve orders"
+// @Security BearerAuth
 // @Router /order/company/{id} [get]
 func (h *OrderHandler) GetByCompanyID(ctx *gin.Context) {
+	user, exists := ctx.Get("user")
+	if !exists || user == nil {
+		errRes := response.ClientResponse(http.StatusUnauthorized, "User not authorized", nil, nil)
+		ctx.JSON(http.StatusUnauthorized, errRes)
+		return
+	}
 	companyID := ctx.Param("id")
 	res, err := h.orderService.GetByCompanyID(ctx.Request.Context(), companyID)
 	if err != nil {
@@ -124,8 +152,15 @@ func (h *OrderHandler) GetByCompanyID(ctx *gin.Context) {
 // @Param id path string true "Influencer ID"
 // @Success 200 {object} response.Response "Orders retrieved successfully"
 // @Failure 500 {object} response.Response "Failed to retrieve orders"
+// @Security BearerAuth
 // @Router /order/influencer/{id} [get]
 func (h *OrderHandler) GetByInfluencerID(ctx *gin.Context) {
+	user, exists := ctx.Get("user")
+	if !exists || user == nil {
+		errRes := response.ClientResponse(http.StatusUnauthorized, "User not authorized", nil, nil)
+		ctx.JSON(http.StatusUnauthorized, errRes)
+		return
+	}
 	influencerID := ctx.Param("id")
 	res, err := h.orderService.GetByInfluencerID(ctx.Request.Context(), influencerID)
 	if err != nil {
@@ -147,6 +182,12 @@ func (h *OrderHandler) GetByInfluencerID(ctx *gin.Context) {
 // @Failure 500 {object} response.Response "Failed to delete order"
 // @Router /order/{id} [delete]
 func (h *OrderHandler) Delete(ctx *gin.Context) {
+	user, exists := ctx.Get("user")
+	if !exists || user == nil {
+		errRes := response.ClientResponse(http.StatusUnauthorized, "User not authorized", nil, nil)
+		ctx.JSON(http.StatusUnauthorized, errRes)
+		return
+	}
 	id := ctx.Param("id")
 	err := h.orderService.Delete(ctx.Request.Context(), id)
 	if err != nil {
