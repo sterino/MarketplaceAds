@@ -3,6 +3,7 @@ package routes
 import (
 	"Marketplace/internal/utils/jwt"
 	"github.com/gin-gonic/gin"
+	"log"
 	"net/http"
 	"strings"
 )
@@ -28,10 +29,12 @@ func JWTMiddleware() gin.HandlerFunc {
 		// Декодируем токен
 		token := tokenParts[1]
 		secretKey := jwt.ProvideSecretKey()
+		log.Printf("Secret Key: %s", string(secretKey))
 
 		// Декодируем JWT токен
 		decodedJWT, err := jwt.Decode(token, secretKey)
 		if err != nil {
+			log.Printf("Error decoding token: %v", err)
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid or expired token"})
 			c.Abort()
 			return
