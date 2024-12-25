@@ -39,7 +39,7 @@ func (ar *AdRepository) Create(ctx context.Context, data ad.CreateRequest) (stri
 }
 
 func (ar *AdRepository) GetByID(ctx context.Context, id string) (ad.Entity, error) {
-	query := `SELECT id, title, description, price, status, orders, created_at, updated_at 
+	query := `SELECT id, title, description, price, status, created_at, updated_at 
 		FROM ads WHERE id = $1;`
 	var entity ad.Entity
 
@@ -51,7 +51,7 @@ func (ar *AdRepository) GetByID(ctx context.Context, id string) (ad.Entity, erro
 }
 
 func (ar *AdRepository) GetAll(ctx context.Context) ([]ad.Entity, error) {
-	query := `SELECT id, title, description, price, status, orders, created_at, updated_at 
+	query := `SELECT id, title, description, price, status, created_at, updated_at 
 		FROM ads;`
 	var ads []ad.Entity
 
