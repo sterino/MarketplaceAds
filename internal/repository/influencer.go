@@ -23,7 +23,7 @@ func NewInfluencerRepository(db *sqlx.DB) interfaces.InfluencerRepository {
 func (ir *InfluencerRepository) Create(ctx context.Context, data influencer.RegisterRequest) (id string, err error) {
 	influencerId := uuid.New().String()
 	query := `
-		INSERT INTO influencer (id, name, email, password, phone_number, platforms, followers_count, category, bio, address)
+		INSERT INTO influencers (id, name, email, password, phone_number, platforms, followers_count, category, bio, address)
 		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
 		RETURNING id;`
 	args := []any{
@@ -49,7 +49,7 @@ func (ir *InfluencerRepository) Create(ctx context.Context, data influencer.Regi
 func (ir *InfluencerRepository) GetByEmail(ctx context.Context, email string) (dest influencer.Entity, err error) {
 	query := `
 		SELECT id, name, email, password, phone_number, platforms, followers_count, category, bio, address, created_at, updated_at
-		FROM influencer
+		FROM influencers
 		WHERE email = $1;`
 	err = ir.db.GetContext(ctx, &dest, query, email)
 	if err != nil {
@@ -64,7 +64,7 @@ func (ir *InfluencerRepository) GetByEmail(ctx context.Context, email string) (d
 func (ir *InfluencerRepository) GetByID(ctx context.Context, id string) (dest influencer.Entity, err error) {
 	query := `
 		SELECT id, name, email, password, phone_number, platforms, followers_count, category, bio, address, created_at, updated_at
-		FROM influencer
+		FROM influencers
 		WHERE id = $1;`
 	err = ir.db.GetContext(ctx, &dest, query, id)
 	if err != nil {
